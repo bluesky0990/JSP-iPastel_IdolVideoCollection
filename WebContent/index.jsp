@@ -16,9 +16,13 @@
 			src: url("./font/Arita-buriM.otf");
 		}
 		
+		* {
+			font-family: "Arita-buriM";
+		}
+		
 		.font-white-package {
 			font-family: "Arita-buriM";
-			color: white;
+			color: #eee;
 		}
 		.font-black-package {
 			font-family: "Arita-buriM";
@@ -27,29 +31,59 @@
 		
 		.button-none-hover:hover {
 			background-color: #24292e;
-			color: white;	
+			color: #eee;	
+		}
+		
+		a:link {
+			color: #eee;
+			text-decoration: none;
+		}
+		a:hover {
+			color: #eee;
+			text-decoration: none;
+		}
+		a:visited {
+			color: #eee;
+			text-decoration: none;
+		}
+		a:active {
+			color: #eee;
+			text-decoration: none;
 		}
 		
 		.container_bar {
 			position: fixed;
 			z-index: 1;
 			width: 100%;
+			transition: top 1s;
+			background-color: #24292e;
 		}
 	</style>
+	<script type="text/javascript">
+		$().ready(function() {
+			var prevScrollpos = window.pageYOffset;
+			window.onscroll = function() {
+			var currentScrollPos = window.pageYOffset;
+			  if (prevScrollpos > currentScrollPos) {
+			    document.getElementById("top_bar").style.top = "0";
+			  } else {
+			    document.getElementById("top_bar").style.top = "-50px";
+			  }
+			  prevScrollpos = currentScrollPos;
+			}
+		});
+	</script>
 </head>
 <body>
 	<div class="container-fluid p-0">
 		<!-- top_bar -->
-		<div class="container_bar container-fulid d-flex flex-row-reverse p-0">
-			<div style="opacity: 0.3; background-color: #24292e;"></div>
-			<div style="background-color: #24292e;">
-				<form action="" method="post" class="font-white-package">
-					<label for="login_id" class="form-control-text">id&nbsp;</label><input type="text" id="login_id" name="login_id" class="btn btn-outline-light btn-sm button-none-hover" style="width:150px;">&nbsp;&nbsp;
-					<label for="login_pw"class="form-control-text">pw&nbsp;</label><input type="password" id="login_pw" name="login_pw" class="btn btn-outline-light btn-sm button-none-hover" style="width:150px;">
-					<input type="button" value="SignIn" class="btn btn-light btn-sm">
-					<input type="button" value="SignUp" class="btn btn-light btn-sm">
-				</form>
-			</div>
+		<div id="top_bar" class="container_bar container-fulid d-flex flex-row-reverse p-1">
+			<form action="" method="post" class="font-white-package">
+				<label for="login_id" class="form-control-text">id&nbsp;</label><input type="text" id="login_id" name="login_id" class="btn btn-outline-light btn-sm button-none-hover" style="width:150px;">&nbsp;&nbsp;
+				<label for="login_pw"class="form-control-text">pw&nbsp;</label><input type="password" id="login_pw" name="login_pw" class="btn btn-outline-light btn-sm button-none-hover" style="width:150px;">
+				<input type="button" value="SignIn" class="btn btn-light btn-sm">
+				<input type="button" value="SignUp" class="btn btn-light btn-sm">
+			</form>
 		</div>
 	
 	
@@ -58,8 +92,56 @@
 		<div class="container-fluid p-0">
 			<a href="index.jsp"><img src="img/banner_v2.png" class="img-fluid"></a>
 		</div>
+		
+		
+		
+		<div class="row container-fluid p-0">
+			<!-- navbar -->
+			<div class="col-3">
+				<div class="container-fluid text-left p-0 pt-1 mt-2" style="width:90%;">
+					<!-- search bar -->
+					<div class="input-group d-flex justify-content-center mb-2">
+						<form class="form-inline" action="#">
+							<input class="form-control" type="text" placeholder="Search"">
+							<div class="input-group-append">
+								<button class="btn btn-light" type="submit">Search</button>  
+							</div>
+						</form>
+					</div>
+					
+					<!-- menu bar -->
+					<div>
+						<ul class="nav navbar-nav">
+							
+							<a href="-----------?boardNo=?no=1"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">자유게시판</li></a>
+							<c:forEach var="dto_board" items="${dtos_board}">
+								<a href="-----------?boardNo=?${dto_board.boardNo}"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">${dto_board.boardName}</li></a>
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
+			</div>
+			
+			
+			
+			<!-- center -->
+			<div class="col-9">
+				<div class="container-fluid">
+					<!-- 320x180 p1 m2, 12개, 최신순 -->
+					<c:forEach var="dto_youtube" items="${dtos_youtube}">
+						<!-- <iframe class="p-1 m-3 my-1" allowfullscreen="" frameborder="0" height="180" src="https://www.youtube.com/embed/mvBR8q7Y0OI?rel=0" width="320"></iframe> </p> -->
+						<iframe class="p-1 m-3 my-1" allowfullscreen="" frameborder="0" height="180" src="${dto_youtube.url}" width="320"></iframe>
+					</c:forEach>
+				</div>
+			</div>
+		</div>
+		
+		<!-- footer -->
+		<div id="footer" class="text-center text-white second mt-2" style="background-color: #223547;">
+			<br>
+			<a href="">회사소개</a> | <a href="">인재채용</a> | <a href="">이용약관</a> | <a href="">개인정보처리방침</a> | <a href="">청소년보호정책</a> | <a href="">고객센터</a>&nbsp;&copy;58￥ corp.
+			<br><br><br>
+		</div>
 	</div>
-	
-	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>asd
 </body>
 </html>
