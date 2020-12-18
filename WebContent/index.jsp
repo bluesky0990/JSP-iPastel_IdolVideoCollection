@@ -78,12 +78,24 @@
 	<div class="container-fluid p-0">
 		<!-- top_bar -->
 		<div id="top_bar" class="container_bar container-fulid d-flex flex-row-reverse p-1">
-			<form action="" method="post" class="font-white-package">
-				<label for="login_id" class="form-control-text">id&nbsp;</label><input type="text" id="login_id" name="login_id" class="btn btn-outline-light btn-sm button-none-hover" style="width:150px;">&nbsp;&nbsp;
-				<label for="login_pw"class="form-control-text">pw&nbsp;</label><input type="password" id="login_pw" name="login_pw" class="btn btn-outline-light btn-sm button-none-hover" style="width:150px;">
-				<input type="button" value="SignIn" class="btn btn-light btn-sm">
-				<input type="button" value="SignUp" class="btn btn-light btn-sm">
-			</form>
+			<c:choose>
+				<c:when test="${state eq 'login'}">
+            		${session_name}님 환영합니다.
+            		<input class="btn btn-light btn-sm" type="button" value="마이페이지" onclick="location.href='mypage.do'">
+					<input class="btn btn-light btn-sm" type="button" value="로그아웃" onclick="location.href='logout.do'">
+				</c:when>
+				<c:otherwise>
+					<c:if test="${faildLogin eq 'fail'}">
+ 						존재하지 않거나 잘못된 아이디 또는 비밀번호를 입력하셨습니다.
+  					</c:if>
+					<form action="login.do" method="post" class="font-white-package">
+						<label for="login_id" class="form-control-text">id&nbsp;</label><input type="text" id="login_id" name="login_id" class="btn btn-outline-light btn-sm button-none-hover" style="width:150px;">&nbsp;&nbsp;
+						<label for="login_pw"class="form-control-text">pw&nbsp;</label><input type="password" id="login_pw" name="login_pw" class="btn btn-outline-light btn-sm button-none-hover" style="width:150px;">
+						<input type="button" value="SignIn" class="btn btn-light btn-sm">
+						<input type="button" value="SignUp" class="btn btn-light btn-sm">
+					</form>
+				</c:otherwise>
+			</c:choose>
 		</div>
 	
 	
@@ -112,10 +124,9 @@
 					<!-- menu bar -->
 					<div>
 						<ul class="nav navbar-nav">
-							
-							<a href="-----------?boardNo=?no=1"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">자유게시판</li></a>
+							<a href="-----------?boardNo=1"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">자유게시판</li></a>
 							<c:forEach var="dto_board" items="${dtos_board}">
-								<a href="-----------?boardNo=?${dto_board.boardNo}"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">${dto_board.boardName}</li></a>
+								<a href="-----------?boardNo=${dto_board.boardNo}"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">${dto_board.boardName}</li></a>
 							</c:forEach>
 						</ul>
 					</div>

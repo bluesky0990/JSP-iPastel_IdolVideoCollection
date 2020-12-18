@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"	
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nellem.datoBoard">
+	<resultMap type="board" id="boardResult">
+		<result property="no" column="no"/>
+		<result property="boardNo" column="boardNo"/>
+		<result property="hits" column="hits"/>
+		<result property="title" column="title"/>
+		<result property="writer" column="writer"/>
+		<result property="content" column="content"/>
+		<result property="regdate" column="regdate"/>
+	</resultMap>
+
+	<select id="selectAll" resultMap="boardResult">
+		select * from board order by no desc
+	</select>
+	
+	<select id="selectPart" resultMap="boardResult">
+		select * from board where boardNo = #{boardNo} order by no desc
+	</select>
+	
+	<select id="selectOne" resultMap="boardResult">
+		select * from board where no = #{no}
+	</select>
+	
+	<insert id="boardInsert" parameterType="board">
+		insert into board(no, boardNo, hits, title, writer, content, regdate) values(seq_board_num.nextval, #{boardNo}, 0, #{title}, #{writer}, #{content}, sysdate)
+	</insert>
+	
+	<update id="boardUpdate" parameterType="board">
+		update board set title=#{title}, content=#{content} where no = #{no}
+	</update>
+	
+	<delete id="boardDelete" parameterType="board">
+		delete from board where no = #{no}
+	</delete>
+</mapper>
