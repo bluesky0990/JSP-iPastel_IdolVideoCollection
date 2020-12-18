@@ -71,7 +71,7 @@
 		</div>
 		
 		<!-- form -->
-		<div id="form" class="rounded-lg bg-light p-4 py-5 pb-4">
+		<div id="form" class="card rounded-lg bg-light p-4 py-5 pb-4">
 			<h4>SignUp</h4>
 			<br><br>
 			<form action="signup.do" method="post">
