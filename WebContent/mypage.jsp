@@ -121,7 +121,7 @@
 					html += '</div>';
 					html += '</td>';
 					html += '<td>';
-					html += '<p id="btn_modifiy_submit" style="color:blue;">Modify</p>';
+					html += '<p id="btn_modifiy_submit" onclick="confirmModify();" style="color:blue;">Modify</p>';
 					html += '</td>';
 					
 					$("#confirm_modify").html(html);
@@ -131,23 +131,35 @@
 					$("#signup_pw").attr("disabled", true);
 					$("#confirm_modify").html("");
 					$("#btn_modifiy").html("Modify");
+					$("#alert_danger").hide();
 				}
 			});
 			
 			$("#btn_modifiy_submit").click(function() {
-				console.log(1);
-				var pw1 = $("#signup_pw").val();
-				var pw2 = $("#signup_confirm").val();
-				console.log(pw1+pw2);
-				if(pw1 === pw2) {
-					// member 테이블 내의 pw 값 업데이트
-				} else {
-					$('.toast').toast('show');
-				}
+				
+			});
+			$("#btn_DeleteAccount").click(function(e) {
+				e.preventDefault();
+				$("#modalDeleteAccount").modal("show");
 			});
 		});
+		function confirmModify() {
+			console.log(1);
+			var pw1 = $("#signup_pw").val();
+			var pw2 = $("#signup_confirm").val();
+			console.log(pw1+pw2);
+			if(pw1 === pw2) {
+				// member 테이블 내의 pw 값 업데이트
+				console.log(true);
+			} else {
+				$('.alert').show();
+			}
+		}
+		function alertClose(id) {
+			$("#" + id).hide();
+		}
 	</script>
-</nead>
+</head>
 <body>
 	<div class="container-fluid p-0">
 		<!-- top_bar -->
@@ -188,6 +200,25 @@
 					<table>
 						<tr>
 							<td>
+								<!-- Alert -->
+								<div id="alert_danger" class="alert alert-danger" style="display:none;">
+									<a href="#" class="close" aria-label="close" onclick="alertClose('alert_danger');">×</a>
+									<strong>Error!</strong> Not Incorrect Password!
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="input-group mb-3">
+									<div class="input-group-prepend">
+										<span class="input-group-text">name</span>
+									</div>
+									<input type="text" class="form-control" id="signup_name" name="signup_name" value="${dto_mypage.name}" disabled>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
 								<div class="input-group mb-3">
 									<div class="input-group-prepend">
 										<span class="input-group-text">&nbsp;i&nbsp;&nbsp;d&nbsp;</span>
@@ -216,30 +247,33 @@
 						
 						<tr>
 							<td>
-								<div class="input-group mb-3">
-									<div class="input-group-prepend">
-										<span class="input-group-text">name</span>
+								<button id="btn_DeleteAccount" class="form-control btn btn-light font-black-package">Delete Account</button>
+								
+								<!-- 회원가입 확인 Modal-->
+								<div class="modal fade" id="modalDeleteAccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="exampleModalLabel">Delete Account</h5>
+												<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">X</span>
+												</button>
+											</div>
+											
+											<div class="modal-body">정말 계정을 삭제하시겠습니까?</div>
+											<div class="modal-footer">
+												<a class="btn" id="modalY" href="#">예</a>
+												<button class="btn" type="button" data-dismiss="modal">아니요</button>
+											</div>
+										</div>
 									</div>
-									<input type="text" class="form-control" id="signup_name" name="signup_name" value="${dto_mypage.name}" disabled>
 								</div>
-							</td>
-						</tr>
-						
-						<tr>
-							<td>
-								<button onclick="" class="form-control btn btn-light font-black-package">Delete Account</button>
 							</td>
 						</tr>
 					</table>
 				</form>
 			</div>
 			<br>
-		</div>
-		
-		<!-- Toast -->
-		<div class="toast">
-			<div class="toast-header">Error</div>
-			<div class="toast-body">Not incorrect Password!</div>
 		</div>
 		
 		
