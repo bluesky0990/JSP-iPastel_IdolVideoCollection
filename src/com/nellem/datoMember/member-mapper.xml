@@ -24,7 +24,7 @@
 	</insert>
 	
 	<update id="memberUpdate" parameterType="member">
-		update member set pw=#{pw}, name=#{name} where id = #{id}
+		update member set pw=#{pw} where id = #{id}
 	</update>
 	
 	<delete id="memberDelete" parameterType="member">

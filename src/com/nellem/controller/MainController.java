@@ -16,6 +16,7 @@ import com.nellem.command.BViewCommand;
 import com.nellem.command.InterfaceCommand;
 import com.nellem.command.MInsertCommand;
 import com.nellem.command.MLoginCommand;
+import com.nellem.command.MSelectCommand;
 
 @WebServlet("*.do")
 public class MainController extends HttpServlet {
@@ -33,8 +34,13 @@ public class MainController extends HttpServlet {
 		if(com !=null && com.trim().equals("signup")) {
 			viewPage = "/WEB-INF/view/signup.jsp";
 		}
-		if(com !=null && com.trim().equals("insert")) {
+		if(com !=null && com.trim().equals("signup_finish")) {
 			command = new MInsertCommand();
+			command.execute(request, response);
+			viewPage = "index.do";
+		}
+		if(com !=null && com.trim().equals("login")) {
+			command = new MLoginCommand();
 			command.execute(request, response);
 			viewPage = "index.do";
 		}
@@ -43,41 +49,10 @@ public class MainController extends HttpServlet {
 			session.invalidate();
 			viewPage = "index.do";
 		}
-		if(com !=null && com.trim().equals("login")) {
-			command = new MLoginCommand();
-			command.execute(request, response);
-			viewPage = "index.do";
-		}
 		if(com !=null && com.trim().equals("mypage")) {
-			viewPage = "/WEB-INF/view/mypage_myinfo.jsp";
-		}
-
-		
-		
-		
-		
-		if(com !=null && com.trim().equals("japBoard")) {
-			command = new BListCommand();
+			command = new MSelectCommand();
 			command.execute(request, response);
-			viewPage = "/WEB-INF/view/BoardJapan.jsp";
-		}
-		if(com !=null && com.trim().equals("korBoard")) {
-			command = new BListCommand();
-			command.execute(request, response);
-			viewPage = "/WEB-INF/view/BoardKorea.jsp";
-		}
-		if(com !=null && com.trim().equals("boardInsertForm")) {
-			viewPage = "/WEB-INF/view/BoardInsertForm.jsp";
-		}
-		if(com !=null && com.trim().equals("boardInsert")) {
-			command = new BInsertCommand();
-			command.execute(request, response);
-			viewPage = "index.do";
-		}
-		if(com !=null && com.trim().equals("boardView")) {
-			command = new BViewCommand();
-			command.execute(request, response);
-			viewPage = "/WEB-INF/view/BoardViewForm.jsp";
+			viewPage = "/WEB-INF/view/mypage.jsp";
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(viewPage);

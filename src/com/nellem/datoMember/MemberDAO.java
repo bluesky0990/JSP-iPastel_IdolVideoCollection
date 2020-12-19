@@ -46,12 +46,24 @@ public class MemberDAO {
 		}
 	} 
 	
-	public int insert(MemberDTO dto) {
+	public int insertMember(MemberDTO dto) {
 		sqlMapper = getInstance();
 		SqlSession session = sqlMapper.openSession();
 		
 		try {
 			return session.insert("com.nellem.datoMember.memberInsert", dto);
+		} finally {
+			session.commit();
+			session.close();
+		}
+	}
+	
+	public int updateMember(MemberDTO dto) {
+		sqlMapper = getInstance();
+		SqlSession session = sqlMapper.openSession();
+		
+		try {
+			return session.update("com.nellem.datoMember.memberUpdate", dto);
 		} finally {
 			session.commit();
 			session.close();

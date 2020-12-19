@@ -1,10 +1,8 @@
 package com.nellem.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,12 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONObject;
-
 import com.nellem.datoMember.MemberDAO;
 import com.nellem.datoMember.MemberDTO;
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 @WebServlet("*.on")
 public class AjaxController extends HttpServlet {
@@ -48,26 +42,20 @@ public class AjaxController extends HttpServlet {
 			out.print(chk);
 		}
 		
-		
-		
-		if(com !=null && com.trim().equals("imageUploadOnForm")) {
-			String savePath = request.getServletContext().getRealPath("img/boardImage");
-			File file = new File(savePath);
-			if(!file.exists()) { file.mkdir(); }
-			int sizeLimit = 1024 * 1024 * 5;
-			String fileName = UUID.randomUUID().toString();	
-			String url = "downloadImage.action?file=" + fileName;
+		if(com !=null && com.trim().equals("pwUpdate")) {
+			String mypageID = request.getParameter("id");
+			String mypagePW = request.getParameter("pw");
 			
-			MultipartRequest multipartRequest = new MultipartRequest(request, savePath, sizeLimit, "UTF-8", new DefaultFileRenamePolicy());
-			
-			JSONObject json = new JSONObject();
-			json.put("uploaded", 1);
-			json.put("fileName", fileName);
-			json.put("url", url);
+			MemberDTO dto = new MemberDTO();
+			MemberDAO dao = new MemberDAO();
+			dto.setId(mypageID);
+			dto.setPw(mypagePW);
+			dao.updateMember(dto);
+
+			boolean chk = true;
 			
 			PrintWriter out = response.getWriter();
-			System.out.println(json);
-			out.println(json);
+			out.print(chk);
 		}
 	}
 	
