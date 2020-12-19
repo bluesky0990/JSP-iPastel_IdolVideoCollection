@@ -1,5 +1,6 @@
 package com.nellem.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -9,11 +10,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.nellem.datoBoardType.BoardTypeDAO;
 import com.nellem.datoBoardType.BoardTypeDTO;
 import com.nellem.datoMember.MemberDAO;
 import com.nellem.datoMember.MemberDTO;
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 @WebServlet("*.on")
 public class AjaxController extends HttpServlet {
@@ -52,7 +56,7 @@ public class AjaxController extends HttpServlet {
 			MemberDAO dao = new MemberDAO();
 			dto.setId(mypageID);
 			dto.setPw(mypagePW);
-			dao.updateMember(dto);
+			dao.updatePwdMember(dto);
 
 			boolean chk = true;
 			PrintWriter out = response.getWriter();
@@ -70,6 +74,22 @@ public class AjaxController extends HttpServlet {
 			System.out.println("생성자생성 및 DTO Setter");
 			dao.boardTypeInsert(dto);
 			System.out.println("인서트 성공");
+
+			boolean chk = true;
+			PrintWriter out = response.getWriter();
+			out.print(chk);
+		}
+		
+		if(com !=null && com.trim().equals("profileImgRemove")) {
+			String id = request.getParameter("id");
+
+			MemberDTO dto = new MemberDTO();
+			MemberDAO dao = new MemberDAO();
+			dto.setId(id);
+			dao.updateDelImgMember(dto);
+			
+			HttpSession session = request.getSession();
+			session.setAttribute("session_profileImg", null);
 
 			boolean chk = true;
 			PrintWriter out = response.getWriter();

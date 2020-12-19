@@ -10,7 +10,7 @@
 	</resultMap>
 
 	<select id="selectAll" resultMap="boardTypeResult">
-		select * from boardType where boardNo not in(1) order by boardName asc
+		select * from boardType where boardNo not in(0, 1) order by boardName asc
 	</select>
 	
 	<select id="selectOne" resultMap="boardTypeResult">

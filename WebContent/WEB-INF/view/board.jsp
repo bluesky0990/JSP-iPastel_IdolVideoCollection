@@ -121,19 +121,11 @@
 			<c:choose>
 				<c:when test="${state eq 'login'}">
 					<div class="px-5">
-						<c:choose>
-							<c:when test="${empty session_profileImg}">
-								<img src="img/userProfile.png" class="rounded-circle" width="40" height="40">
-							</c:when>
-							<c:otherwise>
-								<img src="img/userProfile/${session_profileImg}" class="rounded-circle" width="40" height="40">
-							</c:otherwise>
-						</c:choose>
 	            		<p class="font-white-package d-inline px-3">${session_name}님 환영합니다.</p>
 						<a class="dropdown-toggle" data-toggle="dropdown"></a>
 						<div class="dropdown-menu" id="dropdown">
-							<input class="btn btn-light btn-sm dropdown-item" type="button" value="마이페이지" onclick="location.href='mypage.do'">
-							<input class="btn btn-light btn-sm dropdown-item" type="button" value="로그아웃" onclick="location.href='logout.do'">
+							<input class="btn btn-light btn-sm dropdown-item dropdownHover" type="button" value="마이페이지" onclick="location.href='mypage.do'">
+							<input class="btn btn-light btn-sm dropdown-item dropdownHover" type="button" value="로그아웃" onclick="location.href='logout.do'">
 						</div>
             		</div>
 				</c:when>
@@ -230,12 +222,31 @@
 			
 			<!-- center -->
 			<div class="col-9">
-				<div class="container-fluid">
-					<!-- 320x180 p1 m2, 12개, 최신순 -->
-					<c:forEach var="dto_youtube" items="${dtos_youtube}">
-						<!-- <iframe class="p-1 m-3 my-1" allowfullscreen="" frameborder="0" height="180" src="https://www.youtube.com/embed/mvBR8q7Y0OI?rel=0" width="320"></iframe> </p> -->
-						<iframe class="p-1 m-3 my-1" allowfullscreen="" frameborder="0" height="180" src="${dto_youtube.url}" width="320"></iframe>
+				<div class="container-fluid border">
+					<c:forEach var="dto_board" items="${dtos_board}">
+						<!-- BoardList -->
 					</c:forEach>
+					
+					<div class="m-5">
+						<div class="row">
+							<!-- Profile -->
+							<div class="col-2 p-2 d-flex justify-content-center border">
+								profile
+							</div>
+							
+							<!-- Title, Content -->
+							<div class="col-8 p-2 border">
+								<h4>titletitletitletitletitletitle</h4>
+								<p>contentcontentcontentcontentcontentcontentcontentcontent</p>
+								<p>contentcontentcontentcontentcontentcontentcontentcontent</p>
+							</div>
+							
+							<!-- Comment, Hits, Regdate -->
+							<div class="col-2 p-2 d-flex justify-content-center border">
+								
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

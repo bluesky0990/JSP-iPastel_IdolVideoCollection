@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.nellem.command.BListCommand;
 import com.nellem.command.BTypeListCommand;
 import com.nellem.command.InterfaceCommand;
+import com.nellem.command.MImgUpdateCommand;
 import com.nellem.command.MInsertCommand;
 import com.nellem.command.MLoginCommand;
 import com.nellem.command.MSelectCommand;
@@ -54,6 +56,19 @@ public class MainController extends HttpServlet {
 			command = new MSelectCommand();
 			command.execute(request, response);
 			viewPage = "/WEB-INF/view/mypage.jsp";
+		}
+		if(com !=null && com.trim().equals("boardList")) {
+			command = new BListCommand();
+			command.execute(request, response);
+			viewPage = "/WEB-INF/view/board.jsp";
+		}
+		if(com !=null && com.trim().equals("imgUploadPage")) {
+			viewPage = "/WEB-INF/view/imgUpload.jsp";
+		}
+		if(com !=null && com.trim().equals("imgUpload")) {
+			command = new MImgUpdateCommand();
+			command.execute(request, response);
+			viewPage = "mypage.do";
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(viewPage);

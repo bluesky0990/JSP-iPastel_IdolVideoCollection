@@ -9,25 +9,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.nellem.datoBoard.BoardDAO;
 import com.nellem.datoBoard.BoardDTO;
+import com.nellem.datoBoardType.BoardTypeDAO;
+import com.nellem.datoBoardType.BoardTypeDTO;
 
 public class BListCommand implements InterfaceCommand {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		BoardDTO dto = new BoardDTO();
-		BoardDAO dao = new BoardDAO();
+		BoardDTO dtoBoard = new BoardDTO();
+		BoardDAO daoBoard = new BoardDAO();
+		BoardTypeDTO dtoBoardType = new BoardTypeDTO();
+		BoardTypeDAO daoBoardType = new BoardTypeDAO();
 		
-		String uri = request.getRequestURI(); 	//uri :/member-mvc/insert.do
-		String com= uri.substring(uri.lastIndexOf("/")+ 1, uri.lastIndexOf(".do")); //command :insert
-		int boardType = 0;
-		
-		if(com !=null && com.trim().equals("japBoard")) {
-			boardType = 2;
-		}
-		if(com !=null && com.trim().equals("korBoard")) {
-			boardType = 1;
-		}
-		
-		List<BoardDTO> dtos = dao.boardList(boardType);
-		request.setAttribute("dtos", dtos);
+		int boardType = Integer.parseInt(request.getParameter("boardNo"));
+		List<BoardDTO> dtosBoard = daoBoard.boardList(boardType);
+		List<BoardTypeDTO> dtosBoardType = daoBoardType.boardTypeList();
+		request.setAttribute("dtos_board", dtosBoard);
+		request.setAttribute("dtos_boardType", dtosBoardType);
 	}
 }

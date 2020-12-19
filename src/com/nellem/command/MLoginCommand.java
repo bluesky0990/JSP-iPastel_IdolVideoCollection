@@ -19,6 +19,7 @@ public class MLoginCommand implements InterfaceCommand {
 		String dbID = null;
 		String dbPW = null;
 		String dbName = null;
+		String dbProfileImg = null;
 		int dbRank = 0;
 		
 		MemberDAO dao = new MemberDAO();
@@ -29,6 +30,7 @@ public class MLoginCommand implements InterfaceCommand {
 			dbID = dto.getId();
 			dbPW = dto.getPw();
 			dbName = dto.getName();
+			dbProfileImg = dto.getProfile_img();
 			dbRank = dto.getRank();
 			
 			if(tryID.equals(dbID) && tryPW.equals(dbPW)) {
@@ -37,6 +39,7 @@ public class MLoginCommand implements InterfaceCommand {
 				session.setAttribute("session_id", dbID);
 				session.setAttribute("session_pw", dbPW);
 				session.setAttribute("session_name", dbName);
+				session.setAttribute("session_profileImg", dbProfileImg);
 				session.setAttribute("session_rank", dbRank);
 			} else {
 				session.setAttribute("faildLogin", "fail");

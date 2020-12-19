@@ -4,6 +4,7 @@ public class MemberDTO {
 	private String id;
 	private String pw;
 	private String name;
+	private String profile_img;
 	private int rank;
 	
 	
@@ -24,6 +25,12 @@ public class MemberDTO {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getProfile_img() {
+		return profile_img;
+	}
+	public void setProfile_img(String profile_img) {
+		this.profile_img = profile_img;
 	}
 	public int getRank() {
 		return rank;

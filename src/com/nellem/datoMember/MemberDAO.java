@@ -58,12 +58,36 @@ public class MemberDAO {
 		}
 	}
 	
-	public int updateMember(MemberDTO dto) {
+	public int updatePwdMember(MemberDTO dto) {
 		sqlMapper = getInstance();
 		SqlSession session = sqlMapper.openSession();
 		
 		try {
-			return session.update("com.nellem.datoMember.memberUpdate", dto);
+			return session.update("com.nellem.datoMember.memberPwdUpdate", dto);
+		} finally {
+			session.commit();
+			session.close();
+		}
+	}
+	
+	public int updateImgMember(MemberDTO dto) {
+		sqlMapper = getInstance();
+		SqlSession session = sqlMapper.openSession();
+		
+		try {
+			return session.update("com.nellem.datoMember.memberImgUpdate", dto);
+		} finally {
+			session.commit();
+			session.close();
+		}
+	}
+	
+	public int updateDelImgMember(MemberDTO dto) {
+		sqlMapper = getInstance();
+		SqlSession session = sqlMapper.openSession();
+		
+		try {
+			return session.update("com.nellem.datoMember.memberImgDelete", dto);
 		} finally {
 			session.commit();
 			session.close();

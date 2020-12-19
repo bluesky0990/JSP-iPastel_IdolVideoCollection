@@ -8,6 +8,7 @@
 		<result property="id" column="id"/>
 		<result property="pw" column="pw"/>
 		<result property="name" column="name"/>
+		<result property="profile_img" column="profile_img"/>
 		<result property="rank" column="rank"/>
 	</resultMap>
 
@@ -20,11 +21,19 @@
 	</select>
 	
 	<insert id="memberInsert" parameterType="member">
-		insert into member(id, pw, name, rank) values(#{id}, #{pw}, #{name}, 0)
+		insert into member(id, pw, name, profile_img, rank) values(#{id}, #{pw}, #{name}, null, 0)
 	</insert>
 	
-	<update id="memberUpdate" parameterType="member">
+	<update id="memberPwdUpdate" parameterType="member">
 		update member set pw=#{pw} where id = #{id}
+	</update>
+	
+	<update id="memberImgUpdate" parameterType="member">
+		update member set profile_img=#{profile_img} where id = #{id}
+	</update>
+	
+	<update id="memberImgDelete" parameterType="member">
+		update member set profile_img=NULL where id = #{id}
 	</update>
 	
 	<delete id="memberDelete" parameterType="member">

@@ -65,36 +65,22 @@
 			background-color: #24292e;
 		}
 		
-		#btn_modifiy:link {
+		.form-input {
 			color: blue;
-			text-decoration: underline;
 		}
-		#btn_modifiy:hover {
-			color: blue;
-			text-decoration: underline;
-		}
-		#btn_modifiy:visited {
-			color: blue;
-			text-decoration: underline;
-		}
-		#btn_modifiy:active {
-			color: blue;
-			text-decoration: underline;
-		}
-		
-		#btn_modifiy_submit:link {
+		.form-input:link {
 			color: blue;
 			text-decoration: underline;
 		} 
-		#btn_modifiy_submit:hover {
+		.form-input:hover {
 			color: blue;
 			text-decoration: underline;
 		}
-		#btn_modifiy_submit:visited {
+		.form-input:visited {
 			color: blue;
 			text-decoration: underline;
 		}
-		#btn_modifiy_submit:active {
+		.form-input:active {
 			color: blue;
 			text-decoration: underline;
 		}
@@ -127,7 +113,7 @@
 					html += '</div>';
 					html += '</td>';
 					html += '<td>';
-					html += '<p id="btn_modifiy_submit" onclick="confirmModify();" style="color:blue;">Modify</p>';
+					html += '<p id="btn_modifiy_submit" onclick="confirmModify();" class="form-input">Modify</p>';
 					html += '</td>';
 					
 					$("#confirm_modify").html(html);
@@ -177,6 +163,27 @@
 				$('#alert_danger').show();
 			}
 		}
+		function imageAdd() {
+			$("#form_mypage").submit();
+		}
+		function imageRemove() {
+			var id = encodeURIComponent(document.getElementById("mypage_id").value);
+			$.ajax({
+				url:'profileImgRemove.on',
+				type:'post',
+				data: {"id":id},
+				async:true,
+				success:function(chk) {
+					// ajax 전송 및 반환 성공 후 실행할 함수
+					if("true" === chk) {
+						console.log("이미지 삭제");
+					}
+				},
+				error:function() {
+					alert("페이지 오류 발생, 페이지를 다시 불러와주시길 바랍니다.");
+				}
+			});
+		}
 		function alertClose(id) {
 			$("#" + id).hide();
 		}
@@ -189,6 +196,14 @@
 			<c:choose>
 				<c:when test="${state eq 'login'}">
 					<div class="px-5">
+						<c:choose>
+							<c:when test="${empty dto_mypage.profile_img}">
+								<img src="img/userProfile.png" class="rounded-circle" width="40" height="40">
+							</c:when>
+							<c:otherwise>
+								<img src="img/userProfile/${dto_mypage.profile_img}" class="rounded-circle" width="40" height="40">
+							</c:otherwise>
+						</c:choose>
 	            		<p class="font-white-package d-inline px-3">${session_name}님 환영합니다.</p>
 						<a class="dropdown-toggle" data-toggle="dropdown"></a>
 						<div class="dropdown-menu" id="dropdown">
@@ -223,7 +238,7 @@
 		<div class="container">
 			<br>
 			<div class="d-flex justify-content-center p-5">
-				<form id="form_upadte" action="update.do" method="post">
+				<form id="form_mypage" action="imgUpload.do" method="post" enctype="multipart/form-data">
 					<table>
 						<tr>
 							<td>
@@ -239,6 +254,44 @@
 									<strong>Success!</strong> Modified Password!
 								</div>
 							</td>
+						</tr>
+						<tr>
+							<c:choose>
+								<c:when test="${empty dto_mypage.profile_img}">
+									<!-- if -->
+									<td>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text">Profile</span>
+											</div>
+											<span class="input-group-text p-3">
+												<img src="img/userProfile.png" class="rounded">
+											</span>
+										</div>
+									</td>
+									<td>
+										<a id="btn_imgUpload" href="" class="form-input"><label for="mypage_file">Upload</label></a>
+										<input type="file" id="mypage_file" name="mypage_file" accept="image/gif, image/jpg, image/jpeg, image/png" style="display:none;" onchange="imageAdd();">
+									</td>
+								</c:when>
+								<c:otherwise>
+									<!-- else -->
+									<td>
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text">Profile</span>
+											</div>
+											<span class="input-group-text p-3">
+												<img src="img/userProfile/${dto_mypage.profile_img}" class="rounded">
+											</span>
+										</div>
+									</td>
+									<td>
+										<a onclick="imageRemove();" href="" class="form-input">Remove</a>
+									</td>
+								</c:otherwise>
+							</c:choose>
+							
 						</tr>
 						<tr>
 							<td>
@@ -272,7 +325,7 @@
 							</td>
 							
 							<td>
-								<p id="btn_modifiy" style="color:blue;">Modify</p>
+								<p id="btn_modifiy" class="form-input">Modify</p>
 							</td>
 						</tr>
 						
