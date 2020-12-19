@@ -58,6 +58,12 @@
 			transition: top 1s;
 			background-color: #24292e;
 		}
+		.dropdownHover:hover {
+			background-color: gray;
+		}
+		.dropdownHover:active {
+			background-color: #24292e;
+		}
 		
 		#btn_modifiy:link {
 			color: blue;
@@ -209,7 +215,7 @@
 	
 		<!-- banner -->
 		<div class="container-fluid p-0 pb-5">
-			<a href="index.do"><img src="img/banner_v2.png" class="img-fluid"></a>
+			<a href="index.do"><img src="img/banner.png" class="img-fluid"></a>
 		</div>
 		
 		

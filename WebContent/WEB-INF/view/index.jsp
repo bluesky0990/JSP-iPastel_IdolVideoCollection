@@ -58,6 +58,12 @@
 			transition: top 1s;
 			background-color: #24292e;
 		}
+		.dropdownHover:hover {
+			background-color: gray;
+		}
+		.dropdownHover:active {
+			background-color: #24292e;
+		}
 	</style>
 	<script type="text/javascript">
 		$().ready(function() {
@@ -75,7 +81,37 @@
 			$("#btn_signin").click(function() {
 				$("#form_login").submit();
 			});
+			
+			$("#btn_addBoardType").click(function(e) {
+				e.preventDefault();
+				$("#modalAddBoardType").modal("show");
+			});
+			
+			$("#btn_addBoardTypeOnModal").click(function () {
+				var boardName = $("#input_addBoardType").val();
+				if(boardName !== "") {
+					$.ajax({
+						url:'addBoardType.on',
+						type:'post',
+						data: {"boardName":boardName},
+						async:true,
+						success:function(chk) {
+							if(chk === "true") {
+								$("#input_addBoardType").val("");
+								$("#alert_success").show();
+							}
+						},
+						error:function() {
+							alert("페이지 오류 발생, 페이지를 다시 불러와주시길 바랍니다.");
+						}
+					});
+				}
+			});
 		});
+		function alertClose(id) {
+			$("#" + id).hide();
+			location.href="index.do";
+		}
 	</script>
 </head>
 <body>
@@ -88,8 +124,8 @@
 	            		<p class="font-white-package d-inline px-3">${session_name}님 환영합니다.</p>
 						<a class="dropdown-toggle" data-toggle="dropdown"></a>
 						<div class="dropdown-menu" id="dropdown">
-							<input class="btn btn-light btn-sm dropdown-item" type="button" value="마이페이지" onclick="location.href='mypage.do'">
-							<input class="btn btn-light btn-sm dropdown-item" type="button" value="로그아웃" onclick="location.href='logout.do'">
+							<input class="btn btn-light btn-sm dropdown-item dropdownHover" type="button" value="마이페이지" onclick="location.href='mypage.do'">
+							<input class="btn btn-light btn-sm dropdown-item dropdownHover" type="button" value="로그아웃" onclick="location.href='logout.do'">
 						</div>
             		</div>
 				</c:when>
@@ -111,7 +147,7 @@
 	
 		<!-- banner -->
 		<div class="container-fluid p-0">
-			<a href="index.do"><img src="img/banner_v2.png" class="img-fluid"></a>
+			<a href="index.do"><img src="img/banner.png" class="img-fluid"></a>
 		</div>
 		
 		
@@ -119,13 +155,13 @@
 		<div class="row container-fluid p-0">
 			<!-- navbar -->
 			<div class="col-3">
-				<div class="container-fluid text-left p-0 pt-1 mt-2" style="width:90%;">
+				<div class="container-fluid text-left p-0 pt-1 mt-2" style="width:70%;">
 					<!-- search bar -->
 					<div class="input-group d-flex justify-content-center mb-2">
 						<form class="form-inline" action="#">
 							<input class="form-control" type="text" placeholder="Search"">
 							<div class="input-group-append">
-								<button class="btn btn-light" type="submit">Search</button>  
+								<button class="btn btn-outline-dark" type="submit">Search</button>  
 							</div>
 						</form>
 					</div>
@@ -133,10 +169,47 @@
 					<!-- menu bar -->
 					<div>
 						<ul class="nav navbar-nav">
-							<a href="-----------?boardNo=1"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">자유게시판</li></a>
-							<c:forEach var="dto_board" items="${dtos_board}">
-								<a href="-----------?boardNo=${dto_board.boardNo}"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">${dto_board.boardName}</li></a>
+							<a href="-----------?boardNo=1"><li class="text-center border border-white font-white-package py-2 rounded-top" style="background-color: #24292e;">자유게시판</li></a>
+							<c:forEach var="dto_boardType" items="${dtos_boardType}">
+								<a href="-----------?boardNo=${dto_boardType.boardNo}"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">${dto_boardType.boardName}</li></a>
 							</c:forEach>
+							<c:if test="${session_rank eq 1}">
+								<a id="btn_addBoardType" href=""><li class="text-center border border-white py-2 rounded-bottom" style="background-color: #24292e; color:#f00;">+</li></a>
+								
+								<!-- 회원가입 확인 Modal-->
+								<div class="modal fade" id="modalAddBoardType" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+									<div class="modal-dialog" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="exampleModalLabel">Add Board Type</h5>
+												<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">X</span>
+												</button>
+											</div>
+											
+											<div class="modal-body">
+												<div class="form py-5 px-1">
+													<!-- Success Alert -->
+													<div id="alert_success" class="alert alert-success" style="display:none;">
+													<a onclick="alertClose('alert_success');" href="#" class="close" aria-label="close">×</a>
+														<strong>Success!</strong> Added BoardType
+													</div>
+													
+													<div class="input-group">
+														<input onclick="alertClose('alert_success');" type="text" id="input_addBoardType" class="form-control" placeholder="Name">
+														<div class="input-group-append">
+															<button id="btn_addBoardTypeOnModal" class="btn btn-dark">Add</button>  
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button class="btn" type="button" onclick="alertClose('alert_success');" data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</c:if>
 						</ul>
 					</div>
 				</div>
@@ -152,7 +225,6 @@
 						<!-- <iframe class="p-1 m-3 my-1" allowfullscreen="" frameborder="0" height="180" src="https://www.youtube.com/embed/mvBR8q7Y0OI?rel=0" width="320"></iframe> </p> -->
 						<iframe class="p-1 m-3 my-1" allowfullscreen="" frameborder="0" height="180" src="${dto_youtube.url}" width="320"></iframe>
 					</c:forEach>
-					<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 				</div>
 			</div>
 		</div>

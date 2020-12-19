@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"	
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nellem.datoBoardType">
+	<resultMap type="boardType" id="boardTypeResult">
+		<result property="boardNo" column="boardNo"/>
+		<result property="boardName" column="boardName"/>
+	</resultMap>
+
+	<select id="selectAll" resultMap="boardTypeResult">
+		select * from boardType where boardNo not in(1) order by boardName asc
+	</select>
+	
+	<select id="selectOne" resultMap="boardTypeResult">
+		select * from boardType where boardNo = #{boardNo}
+	</select>
+	
+	<insert id="boardTypeInsert" parameterType="boardType">
+		insert into boardType(boardNo, boardName) values(seq_board_type_no.nextval, #{boardName})
+	</insert>
+	
+	<update id="boardTypeUpdate" parameterType="boardType">
+		update boardType set boardName=#{boardName} where boardNo = #{boardNo}
+	</update>
+	
+	<delete id="boardTypeDelete" parameterType="boardType">
+		delete from boardType where boardNo = #{boardNo}
+	</delete>
+</mapper>

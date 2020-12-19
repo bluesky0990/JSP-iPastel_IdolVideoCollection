@@ -10,9 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.nellem.command.BInsertCommand;
-import com.nellem.command.BListCommand;
-import com.nellem.command.BViewCommand;
+import com.nellem.command.BTypeListCommand;
 import com.nellem.command.InterfaceCommand;
 import com.nellem.command.MInsertCommand;
 import com.nellem.command.MLoginCommand;
@@ -28,7 +26,10 @@ public class MainController extends HttpServlet {
 		String uri = request.getRequestURI(); 	//uri :/member-mvc/list.do
 		String com= uri.substring(uri.lastIndexOf("/")+ 1, uri.lastIndexOf(".do")); //command :insert
 		
+
 		if(com !=null && com.trim().equals("index")) {
+			command = new BTypeListCommand();
+			command.execute(request, response);
 			viewPage = "/WEB-INF/view/index.jsp";
 		}
 		if(com !=null && com.trim().equals("signup")) {

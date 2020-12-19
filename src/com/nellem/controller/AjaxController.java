@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.nellem.datoBoardType.BoardTypeDAO;
+import com.nellem.datoBoardType.BoardTypeDTO;
 import com.nellem.datoMember.MemberDAO;
 import com.nellem.datoMember.MemberDTO;
 
@@ -53,7 +55,23 @@ public class AjaxController extends HttpServlet {
 			dao.updateMember(dto);
 
 			boolean chk = true;
+			PrintWriter out = response.getWriter();
+			out.print(chk);
+		}
+		
+		if(com !=null && com.trim().equals("addBoardType")) {
+			String boardName = request.getParameter("boardName");
+			System.out.println(boardName);
 			
+			BoardTypeDAO dao = new BoardTypeDAO();
+			BoardTypeDTO dto = new BoardTypeDTO();
+			dto.setBoardNo(0);
+			dto.setBoardName(boardName);
+			System.out.println("생성자생성 및 DTO Setter");
+			dao.boardTypeInsert(dto);
+			System.out.println("인서트 성공");
+
+			boolean chk = true;
 			PrintWriter out = response.getWriter();
 			out.print(chk);
 		}

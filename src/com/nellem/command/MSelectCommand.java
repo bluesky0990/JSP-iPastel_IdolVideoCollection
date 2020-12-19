@@ -16,13 +16,8 @@ public class MSelectCommand implements InterfaceCommand {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		String id = (String)session.getAttribute("session_id");
-		String pw = (String)session.getAttribute("session_pw");
-		String name = (String)session.getAttribute("session_name");
-		
-		MemberDTO dto = new MemberDTO();
-		dto.setId(id);
-		dto.setPw(pw);
-		dto.setName(name);
+		MemberDAO dao = new MemberDAO();
+		MemberDTO dto = dao.selectMember(id);
 		
 		request.setAttribute("dto_mypage", dto);
 	}
