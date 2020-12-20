@@ -64,6 +64,16 @@
 		.dropdownHover:active {
 			background-color: #24292e;
 		}
+		
+		.boardTitle {
+			color: #24292e;
+			font-size:1.2em;
+		}
+		
+		.boardTitleAnother {
+			color: gray;
+			font-size:0.8em;
+		}
 	</style>
 	<script type="text/javascript">
 		$().ready(function() {
@@ -162,8 +172,8 @@
 		
 		<div class="row container-fluid p-0">
 			<!-- navbar -->
-			<div class="col-3">
-				<div class="container-fluid text-left p-0 pt-1 mt-2" style="width:70%;">
+			<div class="col-2">
+				<div class="container-fluid text-center p-0 pt-1 mt-2 ml-4">
 					<!-- search bar -->
 					<div class="d-flex justify-content-center mb-2">
 						<form class="" action="#">
@@ -229,14 +239,42 @@
 			
 			
 			<!-- center -->
-			<div class="col-9">
-				<div class="container-fluid">
-					<!-- 320x180 p1 m2, 12개, 최신순 -->
-					<c:forEach var="dto_youtube" items="${dtos_youtube}">
-						<!-- <iframe class="p-1 m-3 my-1" allowfullscreen="" frameborder="0" height="180" src="https://www.youtube.com/embed/mvBR8q7Y0OI?rel=0" width="320"></iframe> </p> -->
-						<iframe class="p-1 m-3 my-1" allowfullscreen="" frameborder="0" height="180" src="${dto_youtube.url}" width="320"></iframe>
-					</c:forEach>
-					
+			<div class="col-10">
+				<div class="container-fluid border-right">
+					<div class="m-5">
+						<!-- 320x180 p1 m2, 12개, 최신순 -->
+						<div class="container-fluid">
+							<c:forEach var="dto_board" items="${dtos_board}">
+								<div class="d-inline-block m-2">
+									<img class="rounded" src="http://i.ytimg.com/vi/${dto_board.youtubeCode}/mqdefault.jpg" width="320" height="180">
+									<div class="row">
+										<div class="col-2">
+											<div class="pt-2"><img class="rounded-circle" src="img/userProfile/${dto_board.profile_img}" width="40" height="40"></div>
+										</div>
+										<div class="col-10">
+											<div class="pt-2">
+												<div class="d-flex justify-content-start">
+													<div class="boardTitle">${dto_board.title}</div>
+												</div>
+												
+												<div class="d-flex justify-content-start">
+													<div class="boardTitleAnother">${dto_board.writer}</div>
+												</div>
+												
+												<div class="d-flex justify-content-start">
+													<div class="boardTitleAnother">
+														<fmt:formatDate var="formatDateRegdate" value="${dto_board.regdate}" pattern="MM-dd"/>
+														조회수 ${dto_board.hits}회 • ${formatDateRegdate}
+													</div>
+												</div>
+											</div>
+										</div>
+										
+									</div>
+								</div>
+							</c:forEach>
+						</div>
+					</div>
 					<!-- Board Bottom (페이징 및 버튼) -->
 					<div class="container-fluid px-4 pb-5">
 						<div class="d-flex justify-content-between">

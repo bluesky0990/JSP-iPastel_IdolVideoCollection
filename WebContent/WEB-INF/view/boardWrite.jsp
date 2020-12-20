@@ -188,8 +188,8 @@
 		
 		<div class="row container-fluid p-0">
 			<!-- navbar -->
-			<div class="col-3">
-				<div class="container-fluid text-left p-0 pt-1 mt-2" style="width:70%;">
+			<div class="col-2">
+				<div class="container-fluid text-center p-0 pt-1 mt-2 ml-4">
 					<!-- search bar -->
 					<div class="d-flex justify-content-center mb-2">
 						<form class="" action="#">
@@ -255,7 +255,7 @@
 			
 			
 			<!-- center -->
-			<div class="col-9">
+			<div class="col-10">
 				<div class="container-fluid border-left border-right">
 					<div class="container-fluid">
 						<div class="m-5">

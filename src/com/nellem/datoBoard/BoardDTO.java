@@ -14,7 +14,7 @@ public class BoardDTO {
 	private int countReply;
 	private String profile_img;
 	
-	private String thumbnail;
+	private String youtubeCode;
 
 	
 	
@@ -90,12 +90,12 @@ public class BoardDTO {
 		this.profile_img = profile_img;
 	}
 
-	public String getThumbnail() {
-		return thumbnail;
+	public String getYoutubeCode() {
+		return youtubeCode;
 	}
 
-	public void setThumbnail(String thumbnail) {
-		this.thumbnail = thumbnail;
+	public void setYoutubeCode(String youtubeCode) {
+		this.youtubeCode = youtubeCode;
 	}
 	
 	
