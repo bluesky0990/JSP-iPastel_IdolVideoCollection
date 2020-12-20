@@ -11,6 +11,8 @@ import com.nellem.datoBoard.BoardDAO;
 import com.nellem.datoBoard.BoardDTO;
 import com.nellem.datoBoardType.BoardTypeDAO;
 import com.nellem.datoBoardType.BoardTypeDTO;
+import com.nellem.datoMember.MemberDAO;
+import com.nellem.datoMember.MemberDTO;
 
 public class BListCommand implements InterfaceCommand {
 	@Override
@@ -22,6 +24,14 @@ public class BListCommand implements InterfaceCommand {
 		
 		int boardType = Integer.parseInt(request.getParameter("boardNo"));
 		List<BoardDTO> dtosBoard = daoBoard.boardList(boardType);
+		
+		MemberDAO daoMember = new MemberDAO();
+		MemberDTO dtoMember = new MemberDTO();
+		for(BoardDTO dto : dtosBoard) {
+			dtoMember.setId(dto.getWriter());
+			dtoMember = daoMember.selectImgMember(dtoMember.getId());
+			dto.setProfile_img(dtoMember.getProfile_img());
+		}
 		List<BoardTypeDTO> dtosBoardType = daoBoardType.boardTypeList();
 		request.setAttribute("dtos_board", dtosBoard);
 		request.setAttribute("dtos_boardType", dtosBoardType);

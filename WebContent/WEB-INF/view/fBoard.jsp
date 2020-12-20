@@ -121,11 +121,19 @@
 			<c:choose>
 				<c:when test="${state eq 'login'}">
 					<div class="px-5">
+						<c:choose>
+							<c:when test="${empty session_profileImg}">
+								<img src="img/userProfile.png" class="rounded-circle" width="40" height="40">
+							</c:when>
+							<c:otherwise>
+								<img src="img/userProfile/${session_profileImg}" class="rounded-circle" width="40" height="40">
+							</c:otherwise>
+						</c:choose>
 	            		<p class="font-white-package d-inline px-3">${session_name}님 환영합니다.</p>
 						<a class="dropdown-toggle" data-toggle="dropdown"></a>
 						<div class="dropdown-menu" id="dropdown">
-							<input class="btn btn-light btn-sm dropdown-item dropdownHover" type="button" value="마이페이지" onclick="location.href='mypage.do'">
-							<input class="btn btn-light btn-sm dropdown-item dropdownHover" type="button" value="로그아웃" onclick="location.href='logout.do'">
+							<input class="btn btn-light btn-sm dropdown-item" type="button" value="마이페이지" onclick="location.href='mypage.do'">
+							<input class="btn btn-light btn-sm dropdown-item" type="button" value="로그아웃" onclick="location.href='logout.do'">
 						</div>
             		</div>
 				</c:when>
@@ -171,7 +179,7 @@
 					<!-- menu bar -->
 					<div>
 						<ul class="nav navbar-nav">
-							<a href="boardList.do?boardNo=1"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e; border-radius: 15px 15px 0px 0px;">자유게시판</li></a>
+							<a href="fBoardList.do?boardNo=1"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e; border-radius: 15px 15px 0px 0px;">자유게시판</li></a>
 							<c:forEach var="dto_boardType" items="${dtos_boardType}">
 								<a href="boardList.do?boardNo=${dto_boardType.boardNo}"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">${dto_boardType.boardName}</li></a>
 							</c:forEach>
@@ -225,28 +233,57 @@
 				<div class="container-fluid border">
 					<c:forEach var="dto_board" items="${dtos_board}">
 						<!-- BoardList -->
-					</c:forEach>
-					
-					<div class="m-5">
-						<div class="row">
-							<!-- Profile -->
-							<div class="col-2 p-2 d-flex justify-content-center border">
-								profile
-							</div>
-							
-							<!-- Title, Content -->
-							<div class="col-8 p-2 border">
-								<h4>titletitletitletitletitletitle</h4>
-								<p>contentcontentcontentcontentcontentcontentcontentcontent</p>
-								<p>contentcontentcontentcontentcontentcontentcontentcontent</p>
-							</div>
-							
-							<!-- Comment, Hits, Regdate -->
-							<div class="col-2 p-2 d-flex justify-content-center border">
+						<div class="m-5">
+							<div class="row">
+								<!-- Profile -->
+								<div class="col-2 d-flex justify-content-center border rounded-left">
+									<table>
+										<tr>
+											<td class="d-flex justify-content-center py-3"><img src="img/userProfile/${dto_board.profile_img}" class="rounded-circle" width="40" height="40"></td>
+										</tr>
+										
+										<tr>
+											<td><p>${dto_board.writer}</p></td>
+										</tr>
+									</table>
+								</div>
 								
+								<!-- Title, Content -->
+								<div class="col-8 border">
+									<h3>${dto_board.title}</h3>
+									<p>${dto_board.content}</p>
+								</div>
+								
+								<!-- Comment, Hits, Regdate -->
+								<div class="col-2 d-flex justify-content-center border rounded-right pl-5">
+									<table>
+										<tr>
+											<td>
+												<img src="img/comment.svg" width="60" height="60">
+											</td>
+											<td>123</td>
+										</tr>
+										<tr>
+											<td>
+												<img src="img/eye.svg" width="30" height="30">
+											</td>
+											<td>${dto_board.hits}</td>
+										</tr>
+										<tr>
+											<td>
+												<img src="img/clock.svg" width="25" height="25">
+											</td>
+											<td>
+												<fmt:formatDate var="formatDateRegdate" value="${dto_board.regdate}" pattern="MM-dd"/>
+												${formatDateRegdate}
+											</td>
+										</tr>
+									</table>
+								</div>
 							</div>
 						</div>
-					</div>
+					</c:forEach>
+					
 				</div>
 			</div>
 		</div>

@@ -57,10 +57,13 @@ public class MainController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "/WEB-INF/view/mypage.jsp";
 		}
-		if(com !=null && com.trim().equals("boardList")) {
+		if(com !=null && com.trim().equals("fBoardList")) {
 			command = new BListCommand();
 			command.execute(request, response);
-			viewPage = "/WEB-INF/view/board.jsp";
+			viewPage = "/WEB-INF/view/fBoard.jsp";
+		}
+		if(com !=null && com.trim().equals("boardList")) {
+			// 아이돌 그룹별 게시판
 		}
 		if(com !=null && com.trim().equals("imgUploadPage")) {
 			viewPage = "/WEB-INF/view/imgUpload.jsp";

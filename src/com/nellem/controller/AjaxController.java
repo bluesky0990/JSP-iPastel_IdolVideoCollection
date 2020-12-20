@@ -71,9 +71,7 @@ public class AjaxController extends HttpServlet {
 			BoardTypeDTO dto = new BoardTypeDTO();
 			dto.setBoardNo(0);
 			dto.setBoardName(boardName);
-			System.out.println("생성자생성 및 DTO Setter");
 			dao.boardTypeInsert(dto);
-			System.out.println("인서트 성공");
 
 			boolean chk = true;
 			PrintWriter out = response.getWriter();

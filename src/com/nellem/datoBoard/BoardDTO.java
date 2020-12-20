@@ -7,6 +7,7 @@ public class BoardDTO {
 	private int boardNo;
 	private String title;
 	private String writer;
+	private String profile_img;
 	private String content;
 	private int hits;
 	private Date regdate;
@@ -35,6 +36,12 @@ public class BoardDTO {
 	}
 	public void setWriter(String writer) {
 		this.writer = writer;
+	}
+	public String getProfile_img() {
+		return profile_img;
+	}
+	public void setProfile_img(String profile_img) {
+		this.profile_img = profile_img;
 	}
 	public String getContent() {
 		return content;

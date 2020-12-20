@@ -44,7 +44,17 @@ public class MemberDAO {
 		} finally {
 			session.close();
 		}
-	} 
+	}
+	
+	public MemberDTO selectImgMember(String id) {
+		sqlMapper = getInstance();
+		SqlSession session = sqlMapper.openSession();
+		try {
+			return session.selectOne("com.nellem.datoMember.selectImgOne", id);
+		} finally {
+			session.close();
+		}
+	}
 	
 	public int insertMember(MemberDTO dto) {
 		sqlMapper = getInstance();
