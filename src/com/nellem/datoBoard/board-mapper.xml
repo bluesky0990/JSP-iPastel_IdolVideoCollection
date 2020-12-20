@@ -26,7 +26,7 @@
 	</select>
 	
 	<select id="selectOne" resultMap="boardResult">
-		select * from board where no = #{no}
+		select board.*, (select member.profile_img from member where member.id = board.writer) as profile_img from board where board.no = #{no}
 	</select>
 	
 	<select id="selectJoin" resultMap="boardResult">

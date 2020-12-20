@@ -133,7 +133,7 @@
 					alert("빈 칸 없이 입력해주시기 바랍니다.");
 				}
 			});
-			
+			//https://m.blog.naver.com/PostView.nhn?blogId=jskimmail&logNo=221600848149&proxyReferer=https:%2F%2Fwww.google.com%2F
 			CKEDITOR.editorConfig = function(config) {
 				// write api
 			};

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"	
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nellem.datoReply">
+	<resultMap type="reply" id="replyResult">
+		<result property="no" column="no"/>
+		<result property="boardNo" column="boardNo"/>
+		<result property="writer" column="writer"/>
+		<result property="content" column="content"/>
+		<result property="regdate" column="regdate"/>
+		
+		<result property="profile_img" column="profile_img"/>
+		<result property="countReply" column="countReply"/>
+	</resultMap>
+
+	<select id="selectAll" resultMap="replyResult">
+		select * from reply order by no desc
+	</select>
+	
+	<select id="selectPart" resultMap="replyResult">
+		select reply.*, (select member.profile_img from member where member.id = reply.writer) as profile_img from reply where reply.boardNo = #{boardType} order by reply.no desc
+	</select>
+	
+	<select id="selectPartCount" resultMap="replyResult">
+		select count(*) as countReply from reply where reply.boardNo = #{no}
+	</select>
+	
+	<insert id="replyInsert" parameterType="reply">
+		insert into reply(no, boardNo, writer, content, regdate) values(seq_reply_no.nextval, #{boardNo}, #{writer}, #{content}, sysdate)
+	</insert>
+	
+	<update id="replyUpdate" parameterType="reply">
+		update reply set content=#{content} where no = #{no}
+	</update>
+	
+	<delete id="replyDelete" parameterType="reply">
+		delete from reply where no = #{no}
+	</delete>
+</mapper>

@@ -324,7 +324,7 @@
 					</c:forEach>
 					
 					<!-- Board Bottom (페이징 및 버튼) -->
-					<div class="container-fluid px-4 pb-5">
+					<div class="container-fluid">
 						<div class="d-flex justify-content-between">
 							<!-- space -->
 							<div></div>

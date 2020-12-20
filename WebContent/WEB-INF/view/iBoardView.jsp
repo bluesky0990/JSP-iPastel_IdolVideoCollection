@@ -257,6 +257,59 @@
 			<!-- center -->
 			<div class="col-10">
 				<div class="container-fluid border-right">
+					<div class="container-fluid">
+						<div class="m-5">
+							<div class="border">
+								<!-- View -->
+								<div class="container">
+									<div class="d-flex justify-content-between">
+										<div class="p-2"><img src="img/userProfile/${dto_board.profile_img}" class="rounded-circle" width="40" height="40">&nbsp;&nbsp;${dto_board.writer}</div>
+										<div class="p-2">
+											<img src="img/eye.svg" width="30" height="30"> ${dto_board.hits}
+											•
+											<img src="img/clock.svg" width="20" height="20">
+											<fmt:formatDate var="formatDateRegdate" value="${dto_board.regdate}" pattern="MM-dd"/>${formatDateRegdate}
+										</div>
+									</div>
+									<div class="p-2"><h2>${dto_board.title}</h2></div>
+									<hr>
+									<div class="p-2">${dto_board.content}</div>
+								</div>
+								
+								
+							</div>
+							
+							<div class="border" style="background-color:#fbfbfb;">
+								<!-- Comment -->
+								<div class="container">
+									<h4 class="p-2 pt-4">Comments(${dto_countReply.countReply})</h4>
+									<div>
+										<c:forEach var="dto_reply" items="${dtos_reply}">
+											<div class="row p-2">
+												<div class="col-1">
+													<div class="pl-2 py-2">
+														<img src="img/userProfile/${dto_reply.profile_img}" class="rounded-circle" width="40" height="40">
+													</div>
+												</div>
+												<div class="col-11">
+													<div class="d-flex justify-content-between">
+														<div class="p-2">${dto_reply.writer}</div>
+														<div class="p-2">
+															${dto_reply.regdate}
+															수정/삭제
+														</div>
+													</div>
+													<div class="border rounded bg-white p-4">${dto_reply.content}</div>
+												</div>
+											</div>
+										</c:forEach>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
 					<div class="m-5">
 						<!-- 320x180 p1 m2, 12개, 최신순 -->
 						<div class="container-fluid">
@@ -279,7 +332,6 @@
 												
 												<div class="d-flex justify-content-start">
 													<div class="boardTitleAnother">
-														<fmt:formatDate var="formatDateRegdate" value="${dto_board.regdate}" pattern="MM-dd"/>
 														조회수 ${dto_board.hits}회 • ${formatDateRegdate}
 													</div>
 												</div>

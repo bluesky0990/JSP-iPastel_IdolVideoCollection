@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import com.nellem.command.BInsertCommand;
 import com.nellem.command.BListCommand;
 import com.nellem.command.BTypeListCommand;
+import com.nellem.command.BViewCommand;
 import com.nellem.command.InterfaceCommand;
 import com.nellem.command.MImgUpdateCommand;
 import com.nellem.command.MInsertCommand;
@@ -89,6 +90,16 @@ public class MainController extends HttpServlet {
 				viewPage = "iBoardList.do?boardNo=" + boardNo;
 			} else {
 				viewPage = "fBoardList.do?boardNo=1";
+			}
+		}
+		if(com !=null && com.trim().equals("boardView")) {
+			command = new BViewCommand();
+			command.execute(request, response);
+			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+			if(boardNo != 1) {
+				viewPage = "/WEB-INF/view/iBoardView.jsp";
+			} else {
+				viewPage = "/WEB-INF/view/fBoardView.jsp";
 			}
 		}
 		

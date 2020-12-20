@@ -7,6 +7,7 @@
 		<typeAlias type="com.nellem.datoMember.MemberDTO" alias="member" />
 		<typeAlias type="com.nellem.datoBoard.BoardDTO" alias="board" />
 		<typeAlias type="com.nellem.datoBoardType.BoardTypeDTO" alias="boardType" />
+		<typeAlias type="com.nellem.datoReply.ReplyDTO" alias="reply" />
 	</typeAliases>
 
 	<environments default="development">
@@ -24,5 +25,6 @@
 		<mapper resource="com/nellem/datoMember/member-mapper.xml" />
 		<mapper resource="com/nellem/datoBoard/board-mapper.xml" />
 		<mapper resource="com/nellem/datoBoardType/boardType-mapper.xml" />
+		<mapper resource="com/nellem/datoReply/reply-mapper.xml" />
 	</mappers>
 </configuration>
