@@ -12,6 +12,9 @@
 		<result property="writer" column="writer"/>
 		<result property="content" column="content"/>
 		<result property="regdate" column="regdate"/>
+		
+		<result property="countReply" column="countReply"/>
+		<result property="profile_img" column="profile_img"/>
 	</resultMap>
 
 	<select id="selectAll" resultMap="boardResult">
@@ -24,6 +27,10 @@
 	
 	<select id="selectOne" resultMap="boardResult">
 		select * from board where no = #{no}
+	</select>
+	
+	<select id="selectJoin" resultMap="boardResult">
+		select board.*, (select count(*) from reply where reply.boardNo = board.no) as countReply, (select member.profile_img from member where member.id = board.writer) as profile_img from board where board.boardNo = #{boardNo}
 	</select>
 	
 	<insert id="boardInsert" parameterType="board">

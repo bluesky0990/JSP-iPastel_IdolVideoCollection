@@ -239,7 +239,7 @@
 								<div class="col-2 d-flex justify-content-center border rounded-left">
 									<table>
 										<tr>
-											<td class="d-flex justify-content-center py-3"><img src="img/userProfile/${dto_board.profile_img}" class="rounded-circle" width="40" height="40"></td>
+											<td class="d-flex justify-content-center py-3 pt-5"><img src="img/userProfile/${dto_board.profile_img}" class="rounded-circle" width="40" height="40"></td>
 										</tr>
 										
 										<tr>
@@ -250,18 +250,20 @@
 								
 								<!-- Title, Content -->
 								<div class="col-8 border">
-									<h3>${dto_board.title}</h3>
-									<p>${dto_board.content}</p>
+									<div class="container-fluid px-3">
+										<h3 class="pb-3 pt-4">${dto_board.title}</h3>
+										<p>${dto_board.content}</p>
+									</div>
 								</div>
 								
 								<!-- Comment, Hits, Regdate -->
-								<div class="col-2 d-flex justify-content-center border rounded-right pl-5">
-									<table>
+								<div class="col-2 d-flex justify-content-center border rounded-right px-4">
+									<table class="table">
 										<tr>
 											<td>
-												<img src="img/comment.svg" width="60" height="60">
+												<img src="img/comment.svg" width="30" height="30">
 											</td>
-											<td>123</td>
+											<td>${dto_board.countReply}</td>
 										</tr>
 										<tr>
 											<td>
@@ -271,7 +273,7 @@
 										</tr>
 										<tr>
 											<td>
-												<img src="img/clock.svg" width="25" height="25">
+												<img src="img/clock.svg" width="27" height="27">
 											</td>
 											<td>
 												<fmt:formatDate var="formatDateRegdate" value="${dto_board.regdate}" pattern="MM-dd"/>

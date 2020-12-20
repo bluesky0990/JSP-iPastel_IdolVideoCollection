@@ -23,16 +23,9 @@ public class BListCommand implements InterfaceCommand {
 		BoardTypeDAO daoBoardType = new BoardTypeDAO();
 		
 		int boardType = Integer.parseInt(request.getParameter("boardNo"));
-		List<BoardDTO> dtosBoard = daoBoard.boardList(boardType);
-		
-		MemberDAO daoMember = new MemberDAO();
-		MemberDTO dtoMember = new MemberDTO();
-		for(BoardDTO dto : dtosBoard) {
-			dtoMember.setId(dto.getWriter());
-			dtoMember = daoMember.selectImgMember(dtoMember.getId());
-			dto.setProfile_img(dtoMember.getProfile_img());
-		}
+		List<BoardDTO> dtosBoard = daoBoard.boardListInnerJoin(boardType);
 		List<BoardTypeDTO> dtosBoardType = daoBoardType.boardTypeList();
+		
 		request.setAttribute("dtos_board", dtosBoard);
 		request.setAttribute("dtos_boardType", dtosBoardType);
 	}

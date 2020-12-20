@@ -67,4 +67,14 @@ public class BoardDAO {
 			session.close();
 		}
 	}
+	
+	public List<BoardDTO> boardListInnerJoin(int boardType) {
+		sqlMapper = getInstance();
+		SqlSession session = sqlMapper.openSession();
+		try {
+			return session.selectList("com.nellem.datoBoard.selectJoin", boardType);
+		} finally {
+			session.close();
+		}
+	}
 }
