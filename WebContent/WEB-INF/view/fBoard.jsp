@@ -5,7 +5,7 @@
 <html>
 	<head>
 	<meta charset="UTF-8">
-	<title>iPastel :: Main</title>
+	<title>iPastel :: Bulletin</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -64,6 +64,47 @@
 		.dropdownHover:active {
 			background-color: #24292e;
 		}
+		
+		.boardTitle {
+			color: #24292e;
+			text-decoration: none;
+		}
+		.boardTitle:link {
+			color: #24292e;
+			text-decoration: none;
+		}
+		.boardTitle:hover {
+			color: #24292e;
+			text-decoration: underline;
+		}
+		.boardTitle:visited {
+			color: #24292e;
+			text-decoration: underline;
+		}
+		.boardTitle:active {
+			color: #24292e;
+			text-decoration: underline;
+		}
+		.boardContent {
+			color: gray;
+			text-decoration: none;
+		}
+		.boardContent:link {
+			color: gray;
+			text-decoration: none;
+		}
+		.boardContent:hover {
+			color: gray;
+			text-decoration: underline;
+		}
+		.boardContent:visited {
+			color: gray;
+			text-decoration: underline;
+		}
+		.boardContent:active {
+			color: gray;
+			text-decoration: underline;
+		}
 	</style>
 	<script type="text/javascript">
 		$().ready(function() {
@@ -108,10 +149,6 @@
 				}
 			});
 		});
-		function alertClose(id) {
-			$("#" + id).hide();
-			location.href="index.do";
-		}
 	</script>
 </head>
 <body>
@@ -181,7 +218,7 @@
 						<ul class="nav navbar-nav">
 							<a href="fBoardList.do?boardNo=1"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e; border-radius: 15px 15px 0px 0px;">자유게시판</li></a>
 							<c:forEach var="dto_boardType" items="${dtos_boardType}">
-								<a href="boardList.do?boardNo=${dto_boardType.boardNo}"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">${dto_boardType.boardName}</li></a>
+								<a href="iBoardList.do?boardNo=${dto_boardType.boardNo}"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">${dto_boardType.boardName}</li></a>
 							</c:forEach>
 							<a href="boardList.do?boardNo=0"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e; border-radius: 0px 0px 15px 15px;">게시판 요청</li></a>
 							<c:if test="${session_rank eq 1}">
@@ -230,7 +267,7 @@
 			
 			<!-- center -->
 			<div class="col-9">
-				<div class="container-fluid border">
+				<div class="container-fluid border-left border-right">
 					<c:forEach var="dto_board" items="${dtos_board}">
 						<!-- BoardList -->
 						<div class="m-5">
@@ -251,8 +288,8 @@
 								<!-- Title, Content -->
 								<div class="col-8 border">
 									<div class="container-fluid px-3">
-										<h3 class="pb-3 pt-4">${dto_board.title}</h3>
-										<p>${dto_board.content}</p>
+										<h3 class="pb-3 pt-4"><a href="boardView.do?boardNo=${dto_board.boardNo}&no=${dto_board.no}" class="boardTitle">${dto_board.title}</a></h3>
+										<p><a href="boardView.do?boardNo=${dto_board.boardNo}&no=${dto_board.no}" class="boardContent">${dto_board.content}</a></p>
 									</div>
 								</div>
 								
@@ -286,6 +323,27 @@
 						</div>
 					</c:forEach>
 					
+					<!-- Board Bottom (페이징 및 버튼) -->
+					<div class="container-fluid px-4 pb-5">
+						<div class="d-flex justify-content-between">
+							<!-- space -->
+							<div></div>
+							
+							<!-- 페이징 -->
+							<div></div>
+							
+							<!-- 버튼 -->
+							<div>
+								<c:choose>
+									<c:when test="${state eq 'login'}">
+										<button onclick="location.href='boardWriteForm.do?boardNo=${param.boardNo}'" class="btn btn-dark">글작성</button>&nbsp;
+									</c:when>
+									<c:otherwise>
+									</c:otherwise>
+								</c:choose>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

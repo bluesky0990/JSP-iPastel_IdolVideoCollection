@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.nellem.command.BInsertCommand;
 import com.nellem.command.BListCommand;
 import com.nellem.command.BTypeListCommand;
 import com.nellem.command.InterfaceCommand;
@@ -62,8 +63,10 @@ public class MainController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "/WEB-INF/view/fBoard.jsp";
 		}
-		if(com !=null && com.trim().equals("boardList")) {
-			// 아이돌 그룹별 게시판
+		if(com !=null && com.trim().equals("iBoardList")) {
+			command = new BListCommand();
+			command.execute(request, response);
+			viewPage = "/WEB-INF/view/iBoard.jsp";
 		}
 		if(com !=null && com.trim().equals("imgUploadPage")) {
 			viewPage = "/WEB-INF/view/imgUpload.jsp";
@@ -72,6 +75,21 @@ public class MainController extends HttpServlet {
 			command = new MImgUpdateCommand();
 			command.execute(request, response);
 			viewPage = "mypage.do";
+		}
+		if(com !=null && com.trim().equals("boardWriteForm")) {
+			command = new BListCommand();
+			command.execute(request, response);
+			viewPage = "/WEB-INF/view/boardWrite.jsp";
+		}
+		if(com !=null && com.trim().equals("boardInsert")) {
+			command = new BInsertCommand();
+			command.execute(request, response);
+			int boardNo = Integer.parseInt(request.getParameter("write_boardType"));
+			if(boardNo != 1) {
+				viewPage = "iBoardList.do?boardNo=" + boardNo;
+			} else {
+				viewPage = "fBoardList.do?boardNo=1";
+			}
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(viewPage);

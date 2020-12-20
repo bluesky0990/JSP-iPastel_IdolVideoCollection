@@ -30,15 +30,19 @@
 	</select>
 	
 	<select id="selectJoin" resultMap="boardResult">
-		select board.*, (select count(*) from reply where reply.boardNo = board.no) as countReply, (select member.profile_img from member where member.id = board.writer) as profile_img from board where board.boardNo = #{boardNo}
+		select board.*, (select count(*) from reply where reply.boardNo = board.no) as countReply, (select member.profile_img from member where member.id = board.writer) as profile_img from board where board.boardNo = #{boardNo} order by board.no desc
 	</select>
 	
 	<insert id="boardInsert" parameterType="board">
-		insert into board(no, boardNo, hits, title, writer, content, regdate) values(seq_board_num.nextval, #{boardNo}, 0, #{title}, #{writer}, #{content}, sysdate)
+		insert into board(no, boardNo, hits, title, writer, content, regdate) values(seq_board_no.nextval, #{boardNo}, 0, #{title}, #{writer}, #{content}, sysdate)
 	</insert>
 	
 	<update id="boardUpdate" parameterType="board">
 		update board set title=#{title}, content=#{content} where no = #{no}
+	</update>
+	
+	<update id="boardHitsUpdate" parameterType="board">
+		update board set hits=hits+1 where no = #{no}
 	</update>
 	
 	<delete id="boardDelete" parameterType="board">

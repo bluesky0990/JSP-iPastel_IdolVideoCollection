@@ -13,30 +13,27 @@ import com.nellem.datoBoard.BoardDTO;
 public class BInsertCommand implements InterfaceCommand {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println(11);
 		BoardDTO dto = new BoardDTO();
+		BoardDAO dao = new BoardDAO();
 		HttpSession session = request.getSession();
+
+		int boardNo = Integer.parseInt(request.getParameter("write_boardType"));
+		String title = request.getParameter("write_title");
+		String writer = (String)session.getAttribute("session_id");
+		String content = request.getParameter("content");
 		
-		String boardStringType = request.getParameter("boardType");
-		int boardIntType = 0;
-		if(boardStringType.equals("kr")) {
-			boardIntType = 1;
-		} else if(boardStringType.equals("jp")) {
-			boardIntType = 2;
+		// 자유게시판(boardNo = 1)의 경우 내용이 미리 보이기 때문에 HTML 태그를 삭제 후 insert한다.
+		if(boardNo == 1) {
+			content = "<p>" + content.replaceAll("<[^>]*>", "") + "</p>";
 		}
 		
-		dto.setNo(0);
-		dto.setBoardNo(boardIntType);
-		dto.setHits(0);
-		dto.setTitle(request.getParameter("title"));
-		dto.setWriter((String)session.getAttribute("nickname"));
-		dto.setContent(request.getParameter("content"));
-		dto.setRegdate(null);
-		dto.setMainImage(null);
-		dto.setImage(null);
+		dto.setBoardNo(boardNo);
+		dto.setTitle(title);
+		dto.setWriter(writer);
+		dto.setContent(content);
 		
 		System.out.println(dto.getBoardNo()+dto.getTitle()+dto.getWriter()+dto.getContent());
-		
-		BoardDAO dao = new BoardDAO();	
 		dao.boardInsert(dto);			//DB에 DTO객체를 저장하기 위한 메소드 insert 호출
 	}
 }
