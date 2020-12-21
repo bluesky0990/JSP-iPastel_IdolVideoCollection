@@ -166,9 +166,9 @@
 				<div class="container-fluid text-center p-0 pt-1 mt-2 ml-4">
 					<!-- search bar -->
 					<div class="d-flex justify-content-center mb-2">
-						<form class="" action="#">
+						<form class="" action="sBoardList.do">
 							<div class="input-group">
-								<input class="form-control" type="text" placeholder="Search"">
+								<input class="form-control" type="text" placeholder="Search" id="search_entry" name="search_entry">
 								<div class="input-group-append">
 									<button class="btn btn-outline-dark" type="submit">Search</button>  
 								</div>
@@ -232,9 +232,9 @@
 			<div class="col-10">
 				<div class="container-fluid">
 					<!-- 320x180 p1 m2, 12개, 최신순 -->
-					<c:forEach var="dto_youtube" items="${dtos_youtube}">
+					<c:forEach var="dto_mainPage" items="${dtos_mainPage}">
 						<!-- <iframe class="p-1 m-3 my-1" allowfullscreen="" frameborder="0" height="180" src="https://www.youtube.com/embed/mvBR8q7Y0OI?rel=0" width="320"></iframe> </p> -->
-						<iframe class="p-1 m-3 my-1" allowfullscreen="" frameborder="0" height="180" src="${dto_youtube.url}" width="320"></iframe>
+						<iframe class="p-1 m-3 my-1" allowfullscreen="" frameborder="0" height="180" src="https://www.youtube.com/embed/${dto_mainPage.youtubeCode}?rel=0" width="320"></iframe>
 					</c:forEach>
 				</div>
 			</div>

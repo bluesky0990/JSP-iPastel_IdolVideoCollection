@@ -12,13 +12,15 @@ import javax.servlet.http.HttpSession;
 
 import com.nellem.command.BInsertCommand;
 import com.nellem.command.BListCommand;
-import com.nellem.command.BTypeListCommand;
+import com.nellem.command.BSearchCommand;
+import com.nellem.command.BTypeMainListCommand;
 import com.nellem.command.BViewCommand;
 import com.nellem.command.InterfaceCommand;
 import com.nellem.command.MImgUpdateCommand;
 import com.nellem.command.MInsertCommand;
 import com.nellem.command.MLoginCommand;
 import com.nellem.command.MSelectCommand;
+import com.nellem.helper.HelperPaging;
 
 @WebServlet("*.do")
 public class MainController extends HttpServlet {
@@ -30,9 +32,29 @@ public class MainController extends HttpServlet {
 		String uri = request.getRequestURI(); 	//uri :/member-mvc/list.do
 		String com= uri.substring(uri.lastIndexOf("/")+ 1, uri.lastIndexOf(".do")); //command :insert
 		
+//		// 페이징 부분
+//		String pageString = request.getParameter("page");
+//		String boardTypeString = request.getParameter("boardNo");
+//		int page = 0;
+//		int boardType = 0;
+//		int blockStartNum = 0;
+//		int blockLastNum = 0;
+//		int lastPageNum = 0;
+//		if(pageString != null && boardTypeString != null) {
+//			page = Integer.parseInt(pageString);
+//			boardType = Integer.parseInt(boardTypeString);
+//			HelperPaging paging = new HelperPaging();
+//			paging.makeBlock(page);
+//			paging.makeLastPageNum(boardType);
+//			blockStartNum = paging.getBlockStartNum();
+//			blockLastNum = paging.getBlockLastNum();
+//			lastPageNum = paging.getLastPageNum();
+//		}
+//		System.out.println(pageString+boardTypeString);
+		
 
 		if(com !=null && com.trim().equals("index")) {
-			command = new BTypeListCommand();
+			command = new BTypeMainListCommand();
 			command.execute(request, response);
 			viewPage = "/WEB-INF/view/index.jsp";
 		}
@@ -68,6 +90,11 @@ public class MainController extends HttpServlet {
 			command = new BListCommand();
 			command.execute(request, response);
 			viewPage = "/WEB-INF/view/iBoard.jsp";
+		}
+		if(com !=null && com.trim().equals("sBoardList")) {
+			command = new BSearchCommand();
+			command.execute(request, response);
+			viewPage = "/WEB-INF/view/sBoard.jsp";
 		}
 		if(com !=null && com.trim().equals("imgUploadPage")) {
 			viewPage = "/WEB-INF/view/imgUpload.jsp";

@@ -33,10 +33,18 @@ public class BViewCommand implements InterfaceCommand {
 		List<BoardDTO> dtosBoard = daoBoard.boardListInnerJoin(boardType);
 		// 게시글 내의 유튜브 링크 추출
 		if(boardType != 1 && boardType != 0) {
+			String codeUrl = null;
+			String content = null;
 			for(BoardDTO dto : dtosBoard) {
-				//<p><iframe allowfullscreen="" frameborder="0" height="360" src="https://www.youtube.com/embed/kS3FFlFOQMo?rel=0" width="640"></iframe></p>
-				//<a href="https://www.youtube.com/embed/am8mLH41iDU?rel=0"><img src="https://img.youtube.com/vi/am8mLH41iDU/sddefault.jpg" style="height:360px; width:640px" /></a></p>
-				String codeUrl= dto.getContent().substring(dto.getContent().indexOf("=\"https://www.youtube.com/embed/") + 32, dto.getContent().indexOf("=\"https://www.youtube.com/embed/") + 43); //command :insert
+				content = dto.getContent();
+				if(content.contains("https://www.youtube.com/embed/")) {
+					//<p><iframe allowfullscreen="" frameborder="0" height="360" src="https://www.youtube.com/embed/kS3FFlFOQMo?rel=0" width="640"></iframe></p>
+					//<a href="https://www.youtube.com/embed/am8mLH41iDU?rel=0"><img src="https://img.youtube.com/vi/am8mLH41iDU/sddefault.jpg" style="height:360px; width:640px" /></a></p>
+					codeUrl= dto.getContent().substring(dto.getContent().indexOf("=\"https://www.youtube.com/embed/") + 32, dto.getContent().indexOf("=\"https://www.youtube.com/embed/") + 43); //command :insert
+				} else {
+					// 유튜브주소 없음
+					codeUrl = "SdcS0avMrXQ";
+				}
 				dto.setYoutubeCode(codeUrl);
 			}
 		}

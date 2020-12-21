@@ -11,25 +11,24 @@ import com.nellem.datoBoard.BoardDAO;
 import com.nellem.datoBoard.BoardDTO;
 import com.nellem.datoBoardType.BoardTypeDAO;
 import com.nellem.datoBoardType.BoardTypeDTO;
-import com.nellem.datoMember.MemberDAO;
-import com.nellem.datoMember.MemberDTO;
 
-public class BListCommand implements InterfaceCommand {
+public class BTypeMainListCommand implements InterfaceCommand {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		BoardDTO dtoBoard = new BoardDTO();
-		BoardDAO daoBoard = new BoardDAO();
-		BoardTypeDTO dtoBoardType = new BoardTypeDTO();
-		BoardTypeDAO daoBoardType = new BoardTypeDAO();
+		BoardTypeDTO boardTypeDTO = new BoardTypeDTO();
+		BoardTypeDAO boardTypeDAO = new BoardTypeDAO();
+		BoardDTO boardDTO = new BoardDTO();
+		BoardDAO boardDAO = new BoardDAO();
 		
-		int boardType = Integer.parseInt(request.getParameter("boardNo"));		
-		List<BoardTypeDTO> dtosBoardType = daoBoardType.boardTypeList();
-		List<BoardDTO> dtosBoard = daoBoard.boardListInnerJoin(boardType);
+		List<BoardTypeDTO> boardTypeDTOS = boardTypeDAO.boardTypeList();
+		request.setAttribute("dtos_boardType", boardTypeDTOS);
 		
-		// 게시글 내의 유튜브 링크 추출
+		
+		List<BoardDTO> boardDTOS = boardDAO.boardMainPageList();
+		
 		String codeUrl = null;
 		String content = null;
-		for(BoardDTO dto : dtosBoard) {
+		for(BoardDTO dto : boardDTOS) {
 			content = dto.getContent();
 			if(content.contains("https://www.youtube.com/embed/")) {
 				//<p><iframe allowfullscreen="" frameborder="0" height="360" src="https://www.youtube.com/embed/kS3FFlFOQMo?rel=0" width="640"></iframe></p>
@@ -41,8 +40,6 @@ public class BListCommand implements InterfaceCommand {
 			}
 			dto.setYoutubeCode(codeUrl);
 		}
-		
-		request.setAttribute("dtos_board", dtosBoard);
-		request.setAttribute("dtos_boardType", dtosBoardType);
+		request.setAttribute("dtos_mainPage", boardDTOS);
 	}
 }

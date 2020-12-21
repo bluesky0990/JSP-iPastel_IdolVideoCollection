@@ -5,19 +5,11 @@
 <html>
 	<head>
 	<meta charset="UTF-8">
-	<title>iPastel :: Write</title>
+	<title>iPastel :: Idol</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<c:choose>
-		<c:when test="${param.boardNo eq '1'}">
-			<script type="text/javascript" src="./ckeditor_noPl/ckeditor.js"></script>
-		</c:when>
-		<c:otherwise>
-			<script type="text/javascript" src="./ckeditor_inPl/ckeditor.js"></script>
-		</c:otherwise>
-	</c:choose>
 	<style type="text/css">
 		@font-face {
 			font-family: "Arita-buriM";
@@ -72,6 +64,32 @@
 		.dropdownHover:active {
 			background-color: #24292e;
 		}
+		
+		.boardTitle {
+			color: #24292e;
+			font-size:1.2em;
+		}
+		.boardTitle:link {
+			color: #24292e;
+			font-size:1.2em;
+		}
+		.boardTitle:hover {
+			color: #000;
+			font-size:1.2em;
+		}
+		.boardTitle:visited {
+			color: #24292e;
+			font-size:1.2em;
+		}
+		.boardTitle:active {
+			color: #000;
+			font-size:1.2em;
+		}
+		
+		.boardTitleAnother {
+			color: gray;
+			font-size:0.8em;
+		}
 	</style>
 	<script type="text/javascript">
 		$().ready(function() {
@@ -115,34 +133,11 @@
 					});
 				}
 			});
-			
-			CKEDITOR.replace('ckeditor4', {
-				width: "100%",
-				height: 450,
-				language_list: ['kor:Korean', 'jpn:Japanese']
-				//filebrowserUploadUrl: "imageUploadOnForm.on"
-			});
-			window.parent.CKEDITOR.tools.callFunction(1, "${url}", "전송완료");
-			$("#write_btnSubmit").click(function() {
-				var title = $("#write_title").val();
-				var content = CKEDITOR.instances['ckeditor4'].getData();
-				if(title !== "" && content !== "") {
-					$("#content").val(content);
-					
-					if(a.indexOf(b) !== 1) {
-						$("#boardInsertForm").submit();	
-					} else {
-						alert("유튜브 플러그인을 이용하여 유튜브 영상을 첨부해주시기 바랍니다.");
-					}
-				} else {
-					alert("빈 칸 없이 입력해주시기 바랍니다.");
-				}
-			});
-			//https://m.blog.naver.com/PostView.nhn?blogId=jskimmail&logNo=221600848149&proxyReferer=https:%2F%2Fwww.google.com%2F
-			CKEDITOR.editorConfig = function(config) {
-				// write api
-			};
 		});
+		function alertClose(id) {
+			$("#" + id).hide();
+			location.href="index.do";
+		}
 	</script>
 </head>
 <body>
@@ -212,7 +207,7 @@
 						<ul class="nav navbar-nav">
 							<a href="fBoardList.do?boardNo=1"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e; border-radius: 15px 15px 0px 0px;">자유게시판</li></a>
 							<c:forEach var="dto_boardType" items="${dtos_boardType}">
-								<a href="iboardList.do?boardNo=${dto_boardType.boardNo}"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">${dto_boardType.boardName}</li></a>
+								<a href="iBoardList.do?boardNo=${dto_boardType.boardNo}"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">${dto_boardType.boardName}</li></a>
 							</c:forEach>
 							<a href="boardList.do?boardNo=0"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e; border-radius: 0px 0px 15px 15px;">게시판 요청</li></a>
 							<c:if test="${session_rank eq 1}">
@@ -261,75 +256,76 @@
 			
 			<!-- center -->
 			<div class="col-10">
-				<div class="container-fluid border-left border-right">
-					<div class="container-fluid">
-						<div class="m-5">
-							<hr>
-							<h2 class="text-dark">게시글 작성하기</h2>
-							<hr>
-							<form action="boardInsert.do?boardNo=${param.boardNo}" method=post" id="boardInsertForm">
-							<!-- CKEditor 이미지 기능 사용하려면 저런식으로 하라던데.... 맞는지는 모름 ㅋ -->
-							<!-- <form action="boardInsert.do?boardNo=${param.boardNo}" method="get" enctype="multipart/form-data" id="boardInsertForm"> -->
-								<div class="row justify-content-md-center">
-									<div class="col-sm-3">
-										<div class="input-group">
-											<div class="input-group-prepend">
-												<label class="input-group-text">Board</label>
-											</div>
-											<select class="custom-select" id="write_boardType" name="write_boardType">
-												<c:choose>
-													<c:when test="${param.boardNo eq '1'}">
-														<option value="1" selected>자유게시판</option>
-													</c:when>
-													<c:otherwise>
-														<c:forEach var="dto_boardType" items="${dtos_boardType}">
-															<c:choose>
-																<c:when test="${dto_boardType.boardNo eq param.boardNo}">
-																	<option value="${dto_boardType.boardNo}" selected>${dto_boardType.boardName}</option>
-																</c:when>
-																<c:otherwise>
-																	<option value="${dto_boardType.boardNo}">${dto_boardType.boardName}</option>
-																</c:otherwise>
-															</c:choose>
-														</c:forEach>
-													</c:otherwise>
-												</c:choose>
-											</select>
-										</div>
-									</div>
-									<div class="col-sm-9">
-										<div class="input-group">
-											<div class="input-group-prepend">
-												<label for="title" class="input-group-text">Title</label>
-											</div>
-											<input type="text" class="form-control" id="write_title" name="write_title" required>
-										</div>
-									</div>
-								</div>
-						
-								<hr>
-						
-								<div>
-									<div class="col_c" style="margin-bottom: 30px">
-										<div class="input-group">
-											<textarea class="form-control" id="ckeditor4" name="ckeditor4" required></textarea>
-											<input type="hidden" id="content" name="content" value="">
-										</div>
-									</div>
-								</div>
-						
-								<div class="row justify-content-md-center">
-									<input type="button" class="btn btn-dark p-2 px-5" id="write_btnSubmit" value="글작성">&nbsp;
-									<c:choose>
-										<c:when test="${param.boardNo eq '1'}">
-											<button type="button" class="btn btn-outline-dark p-2 px-5" onclick="location.href='fBoardList.do?boardNo=1'">&nbsp;목 록&nbsp;</button>
-										</c:when>
-										<c:otherwise>
-											<button type="button" class="btn btn-outline-dark p-2 px-5" onclick="location.href='boardList.do?boardNo=${param.boardNo}'">&nbsp;목 록&nbsp;</button>
-										</c:otherwise>
-									</c:choose>
-								</div>
-							</form>
+				<div class="container-fluid border-right">
+					<div class="m-5">
+						<!-- 320x180 p1 m2, 12개, 최신순 -->
+						<div class="container-fluid">
+							<div class="d-inline-block m-2">
+								<table class="table" style="width:100%;">
+									<tr>
+										<th>No</th>
+										<th>제목</th>
+										<th>작성자</th>
+										<th>작성일</th>
+										<th>조회</th>
+									</tr>
+									<c:forEach var="dto_board" items="${dtos_board}">
+										<tr>
+											<td>${dto_board.no}</td>
+											<td>[${dto_board.boardName}]${dto_board.title}</td>
+											<td>${dto_board.writer}</td>
+											<fmt:formatDate var="formatDateRegdate" value="${dto_board.regdate}" pattern="MM-dd"/>
+											<td>${formatDateRegdate}</td>
+											<td>${dto_board.hits}</td>
+										</tr>
+									</c:forEach>
+								</table>
+							</div>
+						</div>
+					</div>
+					<!-- Board Bottom (페이징 및 버튼) -->
+					<div class="container-fluid px-4 pb-5">
+						<div class="d-flex justify-content-between">
+							<!-- space -->
+							<div></div>
+							
+							<!-- 페이징 -->
+							<div>
+								<ul class="pagination">
+									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">PREV</a></li>
+									<li class="btn btn-dark rounded-0"><a href="javascript:void(0);">1</a></li>
+									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">2</a></li>
+									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">3</a></li>
+									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">4</a></li>
+									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">5</a></li>
+									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">NEXT</a></li>
+									
+									<c:if test="${currentPageNum > 5}">
+										<li class="btn btn-outline-dark rounded-0"><a href="iBoardList.do?boardNo=${param.boardNo}&page=${blockStartNum - 1}">PREV</a></li>
+									</c:if>
+									<c:forEach var="i" begin="${blockStartNum}" end="${blockLastNum}">
+										<c:choose>
+											<c:when test="${i > lastPageNum}">
+												<li class="btn btn-outline-dark rounded-0">${i}</li>
+											</c:when>
+											<c:when test="${i eq currentPageNum}">
+												<li class="btn btn-dark rounded-0">${i}</li>
+											</c:when>
+											<c:otherwise>
+												<li class="btn btn-outline-dark rounded-0"><a href="iBoardList.do?boardNo=${param.boardNo}&page=${i}">${i}</a></li>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+									
+									<c:if test="${currentPageNum > 5}">
+										<li class="btn btn-outline-dark rounded-0"><a href="iBoardList.do?boardNo=${param.boardNo}&page=${blockLastNum + 1}">NEXT</a></li>
+									</c:if>
+								</ul>
+							</div>
+							
+							<!-- 버튼 -->
+							<div>
+							</div>
 						</div>
 					</div>
 				</div>

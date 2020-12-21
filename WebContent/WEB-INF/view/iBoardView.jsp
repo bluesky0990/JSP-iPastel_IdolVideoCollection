@@ -193,8 +193,8 @@
 				async:true,
 				dataType:'json',
 				success:function(data) {
-					console.log(data);
 					var comment_frame = "";
+					
 					for(var i in data){								
 						comment_frame += '<div class="row p-2">';
 						comment_frame += '<div class="col-1">';
@@ -223,6 +223,19 @@
 						
 					}
 					$('#comment_All').html(comment_frame);
+					
+					$.ajax({
+						url:'countReply.on',
+						type:'post',
+						data: {"replyBoardNo": replyBoardNo},
+						async:true,
+						success:function(count) {
+							$("#comment_Count").html('Comments('+count+')');
+						},
+						error:function() {
+							alert("페이지 오류 발생, 페이지를 다시 불러와주시길 바랍니다.");
+						}
+					});
 				},
 				error:function() {
 					alert("페이지 오류 발생, 페이지를 다시 불러와주시길 바랍니다.");
@@ -340,9 +353,9 @@
 				<div class="container-fluid text-center p-0 pt-1 mt-2 ml-4">
 					<!-- search bar -->
 					<div class="d-flex justify-content-center mb-2">
-						<form class="" action="#">
+						<form class="" action="sBoardList.do">
 							<div class="input-group">
-								<input class="form-control" type="text" placeholder="Search">
+								<input class="form-control" type="text" placeholder="Search" id="search_entry" name="search_entry">
 								<div class="input-group-append">
 									<button class="btn btn-outline-dark" type="submit">Search</button>  
 								</div>

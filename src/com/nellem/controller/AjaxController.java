@@ -134,7 +134,6 @@ public class AjaxController extends HttpServlet {
 			}
 
 			request.setAttribute("dto_countReply", dto);
-			System.out.println(data);
 			
 			PrintWriter out = response.getWriter();
 			out.println(data);
@@ -156,6 +155,17 @@ public class AjaxController extends HttpServlet {
 			dto.setNo(no);
 			dto.setContent(content);
 			dao.updateReply(dto);
+		}
+		
+		if(com !=null && com.trim().equals("countReply")) {
+			int no = Integer.parseInt(request.getParameter("replyBoardNo"));
+			ReplyDAO dao = new ReplyDAO();
+			ReplyDTO dto = new ReplyDTO();
+			
+			dto = dao.selectPartCount(no);
+			
+			PrintWriter out = response.getWriter();
+			out.println(dto.getCountReply());
 		}
 	}
 	

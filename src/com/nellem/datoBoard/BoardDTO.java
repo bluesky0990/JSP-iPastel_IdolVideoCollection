@@ -11,6 +11,8 @@ public class BoardDTO {
 	private int hits;
 	private Date regdate;
 
+	private String boardName;
+	private int countBoard;
 	private int countReply;
 	private String profile_img;
 	
@@ -74,6 +76,22 @@ public class BoardDTO {
 		this.regdate = regdate;
 	}
 
+	public String getBoardName() {
+		return boardName;
+	}
+
+	public void setBoardName(String boardName) {
+		this.boardName = boardName;
+	}
+
+	public int getCountBoard() {
+		return countBoard;
+	}
+
+	public void setCountBoard(int countBoard) {
+		this.countBoard = countBoard;
+	}
+
 	public int getCountReply() {
 		return countReply;
 	}
@@ -97,6 +115,4 @@ public class BoardDTO {
 	public void setYoutubeCode(String youtubeCode) {
 		this.youtubeCode = youtubeCode;
 	}
-	
-	
 }

@@ -203,9 +203,9 @@
 				<div class="container-fluid text-center p-0 pt-1 mt-2 ml-4">
 					<!-- search bar -->
 					<div class="d-flex justify-content-center mb-2">
-						<form class="" action="#">
+						<form class="" action="sBoardList.do">
 							<div class="input-group">
-								<input class="form-control" type="text" placeholder="Search"">
+								<input class="form-control" type="text" placeholder="Search" id="search_entry" name="search_entry">
 								<div class="input-group-append">
 									<button class="btn btn-outline-dark" type="submit">Search</button>  
 								</div>

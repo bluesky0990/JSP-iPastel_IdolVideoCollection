@@ -192,9 +192,9 @@
 				<div class="container-fluid text-center p-0 pt-1 mt-2 ml-4">
 					<!-- search bar -->
 					<div class="d-flex justify-content-center mb-2">
-						<form class="" action="#">
+						<form class="" action="sBoardList.do">
 							<div class="input-group">
-								<input class="form-control" type="text" placeholder="Search"">
+								<input class="form-control" type="text" placeholder="Search" id="search_entry" name="search_entry">
 								<div class="input-group-append">
 									<button class="btn btn-outline-dark" type="submit">Search</button>  
 								</div>
@@ -298,7 +298,38 @@
 							<div></div>
 							
 							<!-- 페이징 -->
-							<div></div>
+							<div>
+								<ul class="pagination">
+									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">PREV</a></li>
+									<li class="btn btn-dark rounded-0"><a href="javascript:void(0);">1</a></li>
+									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">2</a></li>
+									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">3</a></li>
+									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">4</a></li>
+									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">5</a></li>
+									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">NEXT</a></li>
+									
+									<c:if test="${currentPageNum > 5}">
+										<li class="btn btn-outline-dark rounded-0"><a href="iBoardList.do?boardNo=${param.boardNo}&page=${blockStartNum - 1}">PREV</a></li>
+									</c:if>
+									<c:forEach var="i" begin="${blockStartNum}" end="${blockLastNum}">
+										<c:choose>
+											<c:when test="${i > lastPageNum}">
+												<li class="btn btn-outline-dark rounded-0">${i}</li>
+											</c:when>
+											<c:when test="${i eq currentPageNum}">
+												<li class="btn btn-dark rounded-0">${i}</li>
+											</c:when>
+											<c:otherwise>
+												<li class="btn btn-outline-dark rounded-0"><a href="iBoardList.do?boardNo=${param.boardNo}&page=${i}">${i}</a></li>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+									
+									<c:if test="${currentPageNum > 5}">
+										<li class="btn btn-outline-dark rounded-0"><a href="iBoardList.do?boardNo=${param.boardNo}&page=${blockLastNum + 1}">NEXT</a></li>
+									</c:if>
+								</ul>
+							</div>
 							
 							<!-- 버튼 -->
 							<div>

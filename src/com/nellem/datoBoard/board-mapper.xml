@@ -13,12 +13,18 @@
 		<result property="content" column="content"/>
 		<result property="regdate" column="regdate"/>
 		
+		<result property="boardName" column="boardName"/>
+		<result property="countBoard" column="countBoard"/>
 		<result property="countReply" column="countReply"/>
 		<result property="profile_img" column="profile_img"/>
 	</resultMap>
 
 	<select id="selectAll" resultMap="boardResult">
 		select * from board order by no desc
+	</select>
+
+	<select id="selectMainPage" resultMap="boardResult">
+		 <![CDATA[select * from board where ROWNUM <= 24 and boardNo not in (0,1) order by no desc]]> 
 	</select>
 	
 	<select id="selectPart" resultMap="boardResult">
@@ -31,6 +37,14 @@
 	
 	<select id="selectJoin" resultMap="boardResult">
 		select board.*, (select count(*) from reply where reply.boardNo = board.no) as countReply, (select member.profile_img from member where member.id = board.writer) as profile_img from board where board.boardNo = #{boardNo} order by board.no desc
+	</select>
+	
+	<select id="selectPartTotalCount" resultMap="boardResult">
+		select count(*) as countBoard from board where boardNo = #{boardNo}
+	</select>
+	
+	<select id="selectSearchAllBoard" resultMap="boardResult">
+		select board.*, (select boardtype.boardname from boardType where board.boardno = boardType.boardno) as boardName from board where title like #{keyword} order by no desc
 	</select>
 	
 	<insert id="boardInsert" parameterType="board">

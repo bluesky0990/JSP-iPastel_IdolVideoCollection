@@ -37,6 +37,16 @@ public class BoardDAO {
 			session.close();
 		}
 	}
+
+	public List<BoardDTO> boardMainPageList() {
+		sqlMapper = getInstance();
+		SqlSession session = sqlMapper.openSession();
+		try {
+			return session.selectList("com.nellem.datoBoard.selectMainPage");
+		} finally {
+			session.close();
+		}
+	}
 	
 	public List<BoardDTO> boardList(int boardType) {
 		sqlMapper = getInstance();
@@ -100,6 +110,26 @@ public class BoardDAO {
 			return session.update("com.nellem.datoBoard.boardHitsUpdate", no);
 		} finally {
 			session.commit();
+			session.close();
+		}
+	}
+	
+	public BoardDTO selectBoardCount(int boardType) {
+		sqlMapper = getInstance();
+		SqlSession session = sqlMapper.openSession();
+		try {
+			return session.selectOne("com.nellem.datoBoard.selectPartTotalCount", boardType);
+		} finally {
+			session.close();
+		}
+	} 
+	
+	public List<BoardDTO> selectSearchAllBoard(String keyword) {
+		sqlMapper = getInstance();
+		SqlSession session = sqlMapper.openSession();
+		try {
+			return session.selectList("com.nellem.datoBoard.selectSearchAllBoard", keyword);
+		} finally {
 			session.close();
 		}
 	}
