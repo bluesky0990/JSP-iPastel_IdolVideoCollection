@@ -90,12 +90,12 @@ public class BoardDAO {
 		}
 	}
 	
-	public int updateBoard(int no) {
+	public int updateBoard(BoardDTO dto) {
 		sqlMapper = getInstance();
 		SqlSession session = sqlMapper.openSession();
 		
 		try {
-			return session.update("com.nellem.datoBoard.boardUpdate", no);
+			return session.update("com.nellem.datoBoard.boardUpdate", dto);
 		} finally {
 			session.commit();
 			session.close();

@@ -435,6 +435,13 @@
 									<div class="p-2"><h2>${dto_board.title}</h2></div>
 									<hr>
 									<div class="p-2">${dto_board.content}</div>
+									<hr>
+									<div class="d-flex justify-content-end p-3 pt-2 pb-4">
+										<c:if test="${dto_board.writer eq session_id}">
+											<input value="글수정" onclick="location.href='boardUpdateForm.do?boardNo=${param.boardNo}&no=${param.no}'" class="btn btn-outline-dark" type="button">&nbsp;
+										</c:if>
+										<input value="목록" onclick="location.href='iBoardList.do?boardNo=${param.boardNo}'" class="btn btn-outline-dark" type="button">
+									</div>
 								</div>
 								
 								

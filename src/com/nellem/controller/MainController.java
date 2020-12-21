@@ -14,6 +14,8 @@ import com.nellem.command.BInsertCommand;
 import com.nellem.command.BListCommand;
 import com.nellem.command.BSearchCommand;
 import com.nellem.command.BTypeMainListCommand;
+import com.nellem.command.BUpdateCommand;
+import com.nellem.command.BUpdateFormCommand;
 import com.nellem.command.BViewCommand;
 import com.nellem.command.InterfaceCommand;
 import com.nellem.command.MImgUpdateCommand;
@@ -128,6 +130,18 @@ public class MainController extends HttpServlet {
 			} else {
 				viewPage = "/WEB-INF/view/fBoardView.jsp";
 			}
+		}
+		if(com !=null && com.trim().equals("boardUpdateForm")) {
+			command = new BUpdateFormCommand();
+			command.execute(request, response);
+			viewPage = "/WEB-INF/view/boardUpdate.jsp";
+		}
+		if(com !=null && com.trim().equals("boardUpdate")) {
+			command = new BUpdateCommand();
+			command.execute(request, response);
+			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+			int no = Integer.parseInt(request.getParameter("no"));
+			viewPage = "boardView.do?boardNo=" + boardNo + "&no=" + no;
 		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher(viewPage);
