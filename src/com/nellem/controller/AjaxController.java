@@ -1,8 +1,8 @@
 package com.nellem.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,12 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.nellem.datoBoardType.BoardTypeDAO;
 import com.nellem.datoBoardType.BoardTypeDTO;
 import com.nellem.datoMember.MemberDAO;
 import com.nellem.datoMember.MemberDTO;
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import com.nellem.datoReply.ReplyDAO;
+import com.nellem.datoReply.ReplyDTO;
 
 @WebServlet("*.on")
 public class AjaxController extends HttpServlet {
@@ -92,6 +95,67 @@ public class AjaxController extends HttpServlet {
 			boolean chk = true;
 			PrintWriter out = response.getWriter();
 			out.print(chk);
+		}
+		
+		if(com !=null && com.trim().equals("insertReply")) {
+			HttpSession session = request.getSession();
+			int boardNo = Integer.parseInt(request.getParameter("no"));
+			String writer = (String)session.getAttribute("session_id");
+			String content = request.getParameter("content");
+
+			ReplyDAO dao = new ReplyDAO();
+			ReplyDTO dto = new ReplyDTO();
+			dto.setBoardNo(boardNo);
+			dto.setWriter(writer);
+			dto.setContent(content);
+			dao.insertReply(dto);
+		}
+		
+		if(com !=null && com.trim().equals("reloadReply")) {
+			int no = Integer.parseInt(request.getParameter("replyBoardNo"));
+			ReplyDAO dao = new ReplyDAO();
+			ReplyDTO dto = new ReplyDTO();
+			JSONArray data = new JSONArray();
+			SimpleDateFormat simple = new SimpleDateFormat("MM-dd HH:mm");
+			
+			List<ReplyDTO> dtos = dao.selectBoard(no);
+			dto = dao.selectPartCount(no);
+			
+			for(ReplyDTO dtoOne : dtos) {
+				JSONObject json = new JSONObject();
+				json.put("no", dtoOne.getNo());
+				json.put("boardNo", dtoOne.getBoardNo() + "");
+				json.put("writer", dtoOne.getWriter() + "");
+				json.put("content", dtoOne.getContent() + "");
+				String regdate = simple.format(dtoOne.getRegdate());
+				json.put("regdate", regdate + "");
+				json.put("profile_img", dtoOne.getProfile_img() + "");
+				data.add(json);
+			}
+
+			request.setAttribute("dto_countReply", dto);
+			System.out.println(data);
+			
+			PrintWriter out = response.getWriter();
+			out.println(data);
+		}
+		
+		if(com !=null && com.trim().equals("removeReply")) {
+			int no = Integer.parseInt(request.getParameter("replyNo"));
+			ReplyDAO dao = new ReplyDAO();
+			
+			dao.deleteReply(no);
+		}
+		
+		if(com !=null && com.trim().equals("updateReply")) {
+			int no = Integer.parseInt(request.getParameter("replyNo"));
+			String content = request.getParameter("replyContent");
+			
+			ReplyDAO dao = new ReplyDAO();
+			ReplyDTO dto = new ReplyDTO();
+			dto.setNo(no);
+			dto.setContent(content);
+			dao.updateReply(dto);
 		}
 	}
 	

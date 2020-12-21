@@ -85,10 +85,29 @@
 			color: #000;
 			font-size:1.2em;
 		}
-		
 		.boardTitleAnother {
 			color: gray;
 			font-size:0.8em;
+		}
+		.boardReply {
+			color: #24292e;
+			text-decoration: none;
+		}
+		.boardReply:link {
+			color: #24292e;
+			text-decoration: none;
+		}
+		.boardReply:hover {
+			color: gray;
+			text-decoration: underline;
+		}
+		.boardReply:visited {
+			color: #24292e;
+			text-decoration: none;
+		}
+		.boardReply:active {
+			color: gray;
+			text-decoration: underline;
 		}
 	</style>
 	<script type="text/javascript">
@@ -133,10 +152,139 @@
 					});
 				}
 			});
+			
+			$("#comment_btnSubmit").click(function () {
+				var no = encodeURIComponent($("#hidden_boardNo").val());
+				var content = $("#comment_content").val();
+				if(content !== "") {
+					$.ajax({
+						url:'insertReply.on',
+						type:'post',
+						data: {"no":no, "content":content},
+						async:true,
+						success:function() {
+							$("#comment_content").val("");
+							reloadRpley();
+						},
+						error:function() {
+							alert("페이지 오류 발생, 페이지를 다시 불러와주시길 바랍니다.");
+						}
+					});
+				}
+			});
+			
+			$("#comment_btnEdit").click(function() {
+			});
+			$("#comment_btnEditCancel").click(function() {
+				$("#comment_btnEditRemove").html('<div id="comment_btnEdit" class="boardReply">수정</div>/<div id="comment_btnRemove" class="boardReply">삭제</div>');
+			});
 		});
 		function alertClose(id) {
 			$("#" + id).hide();
 			location.href="index.do";
+		}
+		
+		function reloadRpley() {
+			var replyBoardNo = encodeURIComponent($("#hidden_boardNo").val());
+			$.ajax({
+				url:'reloadReply.on',
+				type:'post',
+				data: {"replyBoardNo": replyBoardNo},
+				async:true,
+				dataType:'json',
+				success:function(data) {
+					console.log(data);
+					var comment_frame = "";
+					for(var i in data){								
+						comment_frame += '<div class="row p-2">';
+						comment_frame += '<div class="col-1">';
+						comment_frame += '<div class="pl-2 py-2">';
+						comment_frame += '<img src="img/userProfile/' + data[i].profile_img + '" class="rounded-circle" width="40" height="40">';
+						comment_frame += '</div>';
+						comment_frame += '</div>';
+						comment_frame += '<div class="col-11">';
+						comment_frame += '<div class="d-flex justify-content-between">';
+						comment_frame += '<div class="p-2">' + data[i].writer + '</div>';
+						comment_frame += '<div class="p-2">';
+						if(data[i].writer === "${session_id}") {
+							comment_frame += '<div id="comment_btnEditRemove' + data[i].no + '" class="d-inline">';
+							comment_frame += '<div onclick="comment_btnEdit(' + data[i].no + ')" class="boardReply d-inline">수정</div>/<div onclick="comment_btnRemove(' + data[i].no + ')" class="boardReply d-inline">삭제</div>';
+							comment_frame += '</div>';
+						}
+						//<fmt:formatDate var="formatDateReplyRegdate" value="${dto_reply.regdate}" pattern="MM-dd HH:mm"/>${formatDateReplyRegdate}
+						// 날짜 포맷은 AJAX 컨트롤러에서 미리 변환
+						comment_frame += " " + data[i].regdate;
+						comment_frame += '</div>';
+						comment_frame += '</div>';
+						comment_frame += '<input type="hidden" id="comment_hiddenContent' + data[i].no + '" name="comment_hiddenContent' + data[i].no + '" value="' + data[i].content + '">';
+						comment_frame += '<div id="comment_content' + data[i].no + '" class="border rounded bg-white p-4">' + data[i].content + '</div>';
+						comment_frame += '</div>';
+						comment_frame += '</div>';
+						
+					}
+					$('#comment_All').html(comment_frame);
+				},
+				error:function() {
+					alert("페이지 오류 발생, 페이지를 다시 불러와주시길 바랍니다.");
+				}
+			});
+		}
+		function comment_btnEdit(replyNo) {
+			var old_content = $("#comment_hiddenContent" + replyNo).val();
+			$("#comment_btnEditRemove" + replyNo).html('<div onclick="comment_btnEditCancel(' + replyNo + ')" class="boardReply d-inline">취소</div>/<div onclick="comment_btnRemove(' + replyNo + ')" class="boardReply d-inline">삭제</div>');
+			
+			var comment_content = '';
+			comment_content += '<form id="comment_ModifyForm'+ replyNo +'" method="post">';
+			comment_content += '<div class="d-flex justify-content-center">';
+			comment_content += '<textarea class="form-control" placeholder="Comment" style="height:120px;" id="comment_contentModify' + replyNo + '" name="comment_contentModify' + replyNo + '">' + old_content + '</textarea>';
+			comment_content += '</div>';
+			comment_content += '<div class="d-flex justify-content-center">';
+			comment_content += '<input onclick="comment_btnUpdate(' + replyNo + ')" class="form-control btn btn-dark" type="button" value="Modify" id="comment_btnModify' + replyNo + '" name="comment_btnModify' + replyNo + '">';
+			comment_content += '</div>';
+			comment_content += '</form>';
+			$("#comment_content" + replyNo).html(comment_content);
+		}
+		
+		function comment_btnEditCancel(replyNo) {
+			var old_content = $("#comment_hiddenContent" + replyNo).val();
+			$("#comment_btnEditRemove" + replyNo).html('<div onclick="comment_btnEdit(' + replyNo + ')" class="boardReply d-inline">수정</div>/<div onclick="comment_btnRemove(' + replyNo + ')" class="boardReply d-inline">삭제</div>');
+			
+			var comment_content = '';
+			comment_content += old_content;
+			$("#comment_content" + replyNo).html(comment_content);
+		}
+		
+		function comment_btnRemove(replyNo) {
+			var no = encodeURIComponent(replyNo);
+			$.ajax({
+				url:'removeReply.on',
+				type:'post',
+				data: {"replyNo": no},
+				async:true,
+				success:function() {
+					reloadRpley();
+				},
+				error:function() {
+					alert("페이지 오류 발생, 페이지를 다시 불러와주시길 바랍니다.");
+				}
+			});
+		}
+		
+		function comment_btnUpdate(replyNo) {
+			var no = encodeURIComponent(replyNo);
+			var content = encodeURIComponent($("#comment_contentModify" + replyNo).val());
+			$.ajax({
+				url:'updateReply.on',
+				type:'post',
+				data: {"replyNo": no, "replyContent": content},
+				async:true,
+				success:function() {
+					reloadRpley();
+				},
+				error:function() {
+					alert("페이지 오류 발생, 페이지를 다시 불러와주시길 바랍니다.");
+				}
+			});
 		}
 	</script>
 </head>
@@ -194,7 +342,7 @@
 					<div class="d-flex justify-content-center mb-2">
 						<form class="" action="#">
 							<div class="input-group">
-								<input class="form-control" type="text" placeholder="Search"">
+								<input class="form-control" type="text" placeholder="Search">
 								<div class="input-group-append">
 									<button class="btn btn-outline-dark" type="submit">Search</button>  
 								</div>
@@ -262,13 +410,13 @@
 							<div class="border">
 								<!-- View -->
 								<div class="container">
-									<div class="d-flex justify-content-between">
+									<div class="d-flex justify-content-between pt-1">
 										<div class="p-2"><img src="img/userProfile/${dto_board.profile_img}" class="rounded-circle" width="40" height="40">&nbsp;&nbsp;${dto_board.writer}</div>
 										<div class="p-2">
 											<img src="img/eye.svg" width="30" height="30"> ${dto_board.hits}
 											•
 											<img src="img/clock.svg" width="20" height="20">
-											<fmt:formatDate var="formatDateRegdate" value="${dto_board.regdate}" pattern="MM-dd"/>${formatDateRegdate}
+											<fmt:formatDate var="formatDateBoardRegdate" value="${dto_board.regdate}" pattern="MM-dd"/>${formatDateBoardRegdate}
 										</div>
 									</div>
 									<div class="p-2"><h2>${dto_board.title}</h2></div>
@@ -281,9 +429,25 @@
 							
 							<div class="border" style="background-color:#fbfbfb;">
 								<!-- Comment -->
-								<div class="container">
-									<h4 class="p-2 pt-4">Comments(${dto_countReply.countReply})</h4>
-									<div>
+								<div id="comment" class="container">
+									<input type="hidden" id="hidden_boardNo" name="hidden_boardNo" value="${dto_board.no}">
+									<h4 id="comment_Count" class="p-2 py-4">Comments(${dto_countReply.countReply})</h4>
+									<hr>
+									<div class="container-fluid pb-3">
+										<form id="comment_Form" method="post">
+										  	<div class="d-flex justify-content-start">
+										    	<div class="p-2"><img src="img/userProfile/${session_profileImg}" class="rounded-circle" width="40" height="40"></div>
+										    	<div class="p-2 pt-3">${session_id}</div>
+										    </div>
+										  	<div class="d-flex justify-content-center">
+										    	<textarea class="form-control" placeholder="Comment" style="height:120px;" id="comment_content" name="comment_content"></textarea>
+										    </div>
+										  	<div class="d-flex justify-content-center">
+										  	  <input class="form-control btn btn-dark" type="button" value="Submit" id="comment_btnSubmit" name="comment_btnSubmit">
+										    </div>
+									    </form>
+									</div>								
+									<div id="comment_All" class="pb-5">
 										<c:forEach var="dto_reply" items="${dtos_reply}">
 											<div class="row p-2">
 												<div class="col-1">
@@ -295,15 +459,24 @@
 													<div class="d-flex justify-content-between">
 														<div class="p-2">${dto_reply.writer}</div>
 														<div class="p-2">
-															${dto_reply.regdate}
-															수정/삭제
+															<c:choose>
+																<c:when test="${dto_reply.writer eq session_id}">
+																	<div id="comment_btnEditRemove${dto_reply.no}" class="d-inline">
+																		<div onclick="comment_btnEdit(${dto_reply.no})" class="boardReply d-inline">수정</div>/<div onclick="comment_btnRemove(${dto_reply.no})" class="boardReply d-inline">삭제</div>
+																	</div>
+																</c:when>
+																<c:otherwise>
+																	
+																</c:otherwise>
+															</c:choose>
+															<fmt:formatDate var="formatDateReplyRegdate" value="${dto_reply.regdate}" pattern="MM-dd HH:mm"/>${formatDateReplyRegdate}
 														</div>
 													</div>
-													<div class="border rounded bg-white p-4">${dto_reply.content}</div>
+													<input type="hidden" id="comment_hiddenContent${dto_reply.no}" name="comment_hiddenContent${dto_reply.no}" value="${dto_reply.content}">
+													<div id="comment_content${dto_reply.no}" class="border rounded bg-white p-4">${dto_reply.content}</div>
 												</div>
 											</div>
 										</c:forEach>
-										
 									</div>
 								</div>
 							</div>

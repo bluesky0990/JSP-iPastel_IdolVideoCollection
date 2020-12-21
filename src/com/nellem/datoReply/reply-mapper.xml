@@ -20,7 +20,7 @@
 	</select>
 	
 	<select id="selectPart" resultMap="replyResult">
-		select reply.*, (select member.profile_img from member where member.id = reply.writer) as profile_img from reply where reply.boardNo = #{boardType} order by reply.no desc
+		select reply.*, (select member.profile_img from member where member.id = reply.writer) as profile_img from reply where reply.boardNo = #{no} order by reply.no desc
 	</select>
 	
 	<select id="selectPartCount" resultMap="replyResult">

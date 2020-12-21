@@ -7,6 +7,7 @@ import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.json.simple.JSONArray;
 
 public class ReplyDAO {
 	private static SqlSessionFactory sqlMapper = null;  //static 변수로 sqlMapper객체변수 선언
@@ -36,11 +37,11 @@ public class ReplyDAO {
 		}
 	}
 	
-	public List<ReplyDTO> selectBoard(int boardType) {
+	public List<ReplyDTO> selectBoard(int no) {
 		sqlMapper = getInstance();
 		SqlSession session = sqlMapper.openSession();
 		try {
-			return session.selectList("com.nellem.datoReply.selectPart", boardType);
+			return session.selectList("com.nellem.datoReply.selectPart", no);
 		} finally {
 			session.close();
 		}
