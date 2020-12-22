@@ -65,30 +65,45 @@
 			background-color: #24292e;
 		}
 		
-		.boardTitle {
-			color: #24292e;
-			font-size:1.2em;
-		}
-		.boardTitle:link {
-			color: #24292e;
-			font-size:1.2em;
-		}
-		.boardTitle:hover {
-			color: #000;
-			font-size:1.2em;
-		}
-		.boardTitle:visited {
-			color: #24292e;
-			font-size:1.2em;
-		}
-		.boardTitle:active {
-			color: #000;
-			font-size:1.2em;
-		}
-		
-		.boardTitleAnother {
+		.tableFirstWord {
 			color: gray;
-			font-size:0.8em;
+			text-decoration: none;
+		}
+		.tableFirstWord:link {
+			color: gray;
+			text-decoration: none;
+		}
+		.tableFirstWord:hover {
+			color: gray;
+			text-decoration: underline;
+		}
+		.tableFirstWord:visited {
+			color: gray;
+			text-decoration: none;
+		}
+		.tableFirstWord:active {
+			color: gray;
+			text-decoration: underline;
+		}
+		.tableTitle {
+			color: #24292e;
+			text-decoration: none; 
+		}
+		.tableTitle:link {
+			color: #24292e;
+			text-decoration: none; 
+		}
+		.tableTitle:hover {
+			color: #24292e;
+			text-decoration: underline; 
+		}
+		.tableTitle:visited {
+			color: #24292e;
+			text-decoration: none; 
+		}
+		.tableTitle.active {
+			color: #24292e;
+			text-decoration: underline; 
 		}
 	</style>
 	<script type="text/javascript">
@@ -264,21 +279,28 @@
 								<table class="table" style="width:100%;">
 									<tr>
 										<th>No</th>
-										<th>제목</th>
+										<th class="text-center">제목</th>
 										<th>작성자</th>
-										<th>작성일</th>
-										<th>조회</th>
+										<th class="text-center">작성일</th>
+										<th class="text-center">조회</th>
 									</tr>
 									<c:forEach var="dto_board" items="${dtos_board}">
 										<tr>
 											<td>${dto_board.no}</td>
-											<td>[${dto_board.boardName}]${dto_board.title}</td>
+											<td><a href="boardList.do?boardNo=${dto_board.boardNo}" class="tableFirstWord">[${dto_board.boardName}]</a>&nbsp;<a href="boardView.do?boardNo=${dto_board.boardNo}&no=${dto_board.no}" class="tableTitle">${dto_board.title}</a></td>
 											<td>${dto_board.writer}</td>
 											<fmt:formatDate var="formatDateRegdate" value="${dto_board.regdate}" pattern="MM-dd"/>
-											<td>${formatDateRegdate}</td>
-											<td>${dto_board.hits}</td>
+											<td class="text-center">${formatDateRegdate}</td>
+											<td class="text-center">${dto_board.hits}</td>
 										</tr>
 									</c:forEach>
+									<tr>
+										<td class="text-white">　　　　</td>
+										<td class="text-white">　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　</td>
+										<td class="text-white">　　　　　　　　　　　　　　　　　　</td>
+										<td class="text-white">　　　　　</td>
+										<td class="text-white">　　　　</td>
+									</tr>
 								</table>
 							</div>
 						</div>

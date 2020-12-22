@@ -93,6 +93,16 @@ public class MainController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "/WEB-INF/view/iBoard.jsp";
 		}
+		if(com !=null && com.trim().equals("boardList")) {
+			command = new BListCommand();
+			command.execute(request, response);
+			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+			if(boardNo != 1) {
+				viewPage = "/WEB-INF/view/iBoardView.jsp";
+			} else {
+				viewPage = "/WEB-INF/view/fBoardView.jsp";
+			}
+		}
 		if(com !=null && com.trim().equals("sBoardList")) {
 			command = new BSearchCommand();
 			command.execute(request, response);
@@ -129,6 +139,10 @@ public class MainController extends HttpServlet {
 				viewPage = "/WEB-INF/view/iBoardView.jsp";
 			} else {
 				viewPage = "/WEB-INF/view/fBoardView.jsp";
+			}
+			if(boardNo == 0) {
+				// 요청게시판 주소 작성하시오
+				//viewPage = "/WEB-INF/view/iBoardView.jsp";
 			}
 		}
 		if(com !=null && com.trim().equals("boardUpdateForm")) {

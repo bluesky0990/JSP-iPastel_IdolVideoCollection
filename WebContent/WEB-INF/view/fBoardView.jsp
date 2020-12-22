@@ -5,7 +5,7 @@
 <html>
 	<head>
 	<meta charset="UTF-8">
-	<title>iPastel :: Idol</title>
+	<title>iPastel :: Bulletin</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -67,45 +67,41 @@
 		
 		.boardTitle {
 			color: #24292e;
-			font-size:1.2em;
+			text-decoration: none;
 		}
 		.boardTitle:link {
 			color: #24292e;
-			font-size:1.2em;
+			text-decoration: none;
 		}
 		.boardTitle:hover {
-			color: #000;
-			font-size:1.2em;
+			color: #24292e;
+			text-decoration: underline;
 		}
 		.boardTitle:visited {
 			color: #24292e;
-			font-size:1.2em;
+			text-decoration: underline;
 		}
 		.boardTitle:active {
-			color: #000;
-			font-size:1.2em;
+			color: #24292e;
+			text-decoration: underline;
 		}
-		.boardTitleAnother {
+		.boardContent {
 			color: gray;
-			font-size:0.8em;
-		}
-		.boardReply {
-			color: #24292e;
 			text-decoration: none;
 		}
-		.boardReply:link {
-			color: #24292e;
+		.boardContent:link {
+			color: gray;
 			text-decoration: none;
 		}
-		.boardReply:hover {
+		.boardContent:hover {
 			color: gray;
 			text-decoration: underline;
 		}
-		.boardReply:visited {
-			color: #24292e;
-			text-decoration: none;
+		.boardContent:visited {
+			color: gray;
+			text-decoration: underline;
 		}
-		.boardReply:active {
+		.boardContent:active {
 			color: gray;
 			text-decoration: underline;
 		}
@@ -152,7 +148,6 @@
 					});
 				}
 			});
-			
 			$("#comment_btnSubmit").click(function () {
 				var no = encodeURIComponent($("#hidden_boardNo").val());
 				var content = $("#comment_content").val();
@@ -500,42 +495,63 @@
 							</div>
 						</div>
 					</div>
-					
-					<div class="m-5">
-						<!-- 320x180 p1 m2, 12개, 최신순 -->
-						<div class="container-fluid">
-							<c:forEach var="dto_board" items="${dtos_board}">
-								<div class="d-inline-block m-2">
-									<a href="boardView.do?boardNo=${dto_board.boardNo}&no=${dto_board.no}"><img class="rounded" src="http://i.ytimg.com/vi/${dto_board.youtubeCode}/mqdefault.jpg" width="320" height="180"></a>
-									<div class="row">
-										<div class="col-2">
-											<div class="pt-2"><img class="rounded-circle" src="img/userProfile/${dto_board.profile_img}" width="40" height="40"></div>
-										</div>
-										<div class="col-10">
-											<div class="pt-2">
-												<div class="d-flex justify-content-start">
-													<div><a class="boardTitle" href="boardView.do?boardNo=${dto_board.boardNo}&no=${dto_board.no}">${dto_board.title}</a></div>
-												</div>
-												
-												<div class="d-flex justify-content-start">
-													<div class="boardTitleAnother">${dto_board.writer}</div>
-												</div>
-												
-												<div class="d-flex justify-content-start">
-													<div class="boardTitleAnother">
-														조회수 ${dto_board.hits}회 • ${formatDateRegdate}
-													</div>
-												</div>
-											</div>
-										</div>
+					<c:forEach var="dto_board" items="${dtos_board}">
+						<!-- BoardList -->
+						<div class="m-5">
+							<div class="row">
+								<!-- Profile -->
+								<div class="col-2 d-flex justify-content-center border rounded-left">
+									<table>
+										<tr>
+											<td class="d-flex justify-content-center py-3 pt-5"><img src="img/userProfile/${dto_board.profile_img}" class="rounded-circle" width="40" height="40"></td>
+										</tr>
 										
+										<tr>
+											<td><p>${dto_board.writer}</p></td>
+										</tr>
+									</table>
+								</div>
+								
+								<!-- Title, Content -->
+								<div class="col-8 border">
+									<div class="container-fluid px-3">
+										<h3 class="pb-3 pt-4"><a href="boardView.do?boardNo=${dto_board.boardNo}&no=${dto_board.no}" class="boardTitle">${dto_board.title}</a></h3>
+										<p><a href="boardView.do?boardNo=${dto_board.boardNo}&no=${dto_board.no}" class="boardContent">${dto_board.content}</a></p>
 									</div>
 								</div>
-							</c:forEach>
+								
+								<!-- Comment, Hits, Regdate -->
+								<div class="col-2 d-flex justify-content-center border rounded-right px-4">
+									<table class="table">
+										<tr>
+											<td>
+												<img src="img/comment.svg" width="30" height="30">
+											</td>
+											<td>${dto_board.countReply}</td>
+										</tr>
+										<tr>
+											<td>
+												<img src="img/eye.svg" width="30" height="30">
+											</td>
+											<td>${dto_board.hits}</td>
+										</tr>
+										<tr>
+											<td>
+												<img src="img/clock.svg" width="27" height="27">
+											</td>
+											<td>
+												<fmt:formatDate var="formatDateRegdate" value="${dto_board.regdate}" pattern="MM-dd"/>
+												${formatDateRegdate}
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
 						</div>
-					</div>
+					</c:forEach>
+					
 					<!-- Board Bottom (페이징 및 버튼) -->
-					<div class="container-fluid px-4 pb-5">
+					<div class="container-fluid">
 						<div class="d-flex justify-content-between">
 							<!-- space -->
 							<div></div>
