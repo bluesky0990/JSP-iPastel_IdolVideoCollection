@@ -110,7 +110,6 @@
 		});
 		function alertClose(id) {
 			$("#" + id).hide();
-			location.href="index.do";
 		}
 	</script>
 </head>
