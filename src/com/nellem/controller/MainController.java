@@ -22,7 +22,7 @@ import com.nellem.command.MImgUpdateCommand;
 import com.nellem.command.MInsertCommand;
 import com.nellem.command.MLoginCommand;
 import com.nellem.command.MSelectCommand;
-import com.nellem.helper.HelperPaging;
+import com.nellem.paging.PagingDTO;
 
 @WebServlet("*.do")
 public class MainController extends HttpServlet {
@@ -122,14 +122,22 @@ public class MainController extends HttpServlet {
 			viewPage = "/WEB-INF/view/boardWrite.jsp";
 		}
 		if(com !=null && com.trim().equals("boardInsert")) {
+			System.out.println(1);
 			command = new BInsertCommand();
+			System.out.println(2);
 			command.execute(request, response);
+			System.out.println(3);
 			int boardNo = Integer.parseInt(request.getParameter("write_boardType"));
+			System.out.println(boardNo);
 			if(boardNo != 1) {
 				viewPage = "iBoardList.do?boardNo=" + boardNo;
 			} else {
 				viewPage = "fBoardList.do?boardNo=1";
 			}
+			//
+			//
+			//
+			System.out.println(viewPage);
 		}
 		if(com !=null && com.trim().equals("boardView")) {
 			command = new BViewCommand();

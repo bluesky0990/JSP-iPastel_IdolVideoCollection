@@ -17,6 +17,9 @@
 		<result property="countBoard" column="countBoard"/>
 		<result property="countReply" column="countReply"/>
 		<result property="profile_img" column="profile_img"/>
+		
+		<result property="startRow" column="startRow"/>
+		<result property="endRow" column="endRow"/>
 	</resultMap>
 
 	<select id="selectAll" resultMap="boardResult">
@@ -45,6 +48,10 @@
 	
 	<select id="selectSearchAllBoard" resultMap="boardResult">
 		select board.*, (select boardtype.boardname from boardType where board.boardno = boardType.boardno) as boardName from board where title like #{keyword} order by no desc
+	</select>
+	
+	<select id="selectPagingBoard" resultMap="boardResult">
+		select rnum, no, boardNo, title, writer, content, hits, regdate from (select rownum as rnum, no, boardNo, title, writer, content, hits, regdate from (select no, boardno, title, writer, content, hits, regdate from board order by no desc)) where rnum between #{startRow} and #{endRow}
 	</select>
 	
 	<insert id="boardInsert" parameterType="board">

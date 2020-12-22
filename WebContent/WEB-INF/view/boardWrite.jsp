@@ -128,12 +128,7 @@
 				var content = CKEDITOR.instances['ckeditor4'].getData();
 				if(title !== "" && content !== "") {
 					$("#content").val(content);
-					
-					if(a.indexOf(b) !== 1) {
-						$("#boardInsertForm").submit();	
-					} else {
-						alert("유튜브 플러그인을 이용하여 유튜브 영상을 첨부해주시기 바랍니다.");
-					}
+					$("#boardInsertForm").submit();	
 				} else {
 					alert("빈 칸 없이 입력해주시기 바랍니다.");
 				}

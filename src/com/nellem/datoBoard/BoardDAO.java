@@ -133,4 +133,14 @@ public class BoardDAO {
 			session.close();
 		}
 	}
+	
+	public List<BoardDTO> selectBoardPaging(BoardDTO dto) {
+		sqlMapper = getInstance();
+		SqlSession session = sqlMapper.openSession();
+		try {
+			return session.selectList("com.nellem.datoBoard.selectBoardPaging", dto);
+		} finally {
+			session.close();
+		}
+	}
 }
