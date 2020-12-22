@@ -148,7 +148,149 @@
 					});
 				}
 			});
+			$("#comment_btnSubmit").click(function () {
+				var no = encodeURIComponent($("#hidden_boardNo").val());
+				var content = $("#comment_content").val();
+				if(content !== "") {
+					$.ajax({
+						url:'insertReply.on',
+						type:'post',
+						data: {"no":no, "content":content},
+						async:true,
+						success:function() {
+							$("#comment_content").val("");
+							reloadRpley();
+						},
+						error:function() {
+							alert("페이지 오류 발생, 페이지를 다시 불러와주시길 바랍니다.");
+						}
+					});
+				}
+			});
+			
+			$("#comment_btnEditCancel").click(function() {
+				$("#comment_btnEditRemove").html('<div id="comment_btnEdit" class="boardReply">수정</div>/<div id="comment_btnRemove" class="boardReply">삭제</div>');
+			});
 		});
+		function alertClose(id) {
+			$("#" + id).hide();
+		}
+		
+		function reloadRpley() {
+			var replyBoardNo = encodeURIComponent($("#hidden_boardNo").val());
+			$.ajax({
+				url:'reloadReply.on',
+				type:'post',
+				data: {"replyBoardNo": replyBoardNo},
+				async:true,
+				dataType:'json',
+				success:function(data) {
+					var comment_frame = "";
+					
+					for(var i in data){								
+						comment_frame += '<div class="row p-2">';
+						comment_frame += '<div class="col-1">';
+						comment_frame += '<div class="pl-2 py-2">';
+						comment_frame += '<img src="img/userProfile/' + data[i].profile_img + '" class="rounded-circle" width="40" height="40">';
+						comment_frame += '</div>';
+						comment_frame += '</div>';
+						comment_frame += '<div class="col-11">';
+						comment_frame += '<div class="d-flex justify-content-between">';
+						comment_frame += '<div class="p-2">' + data[i].writer + '</div>';
+						comment_frame += '<div class="p-2">';
+						if(data[i].writer === "${session_id}") {
+							comment_frame += '<div id="comment_btnEditRemove' + data[i].no + '" class="d-inline">';
+							comment_frame += '<div onclick="comment_btnEdit(' + data[i].no + ')" class="boardReply d-inline">수정</div>/<div onclick="comment_btnRemove(' + data[i].no + ')" class="boardReply d-inline">삭제</div>';
+							comment_frame += '</div>';
+						}
+						//<fmt:formatDate var="formatDateReplyRegdate" value="${dto_reply.regdate}" pattern="MM-dd HH:mm"/>${formatDateReplyRegdate}
+						// 날짜 포맷은 AJAX 컨트롤러에서 미리 변환
+						comment_frame += " " + data[i].regdate;
+						comment_frame += '</div>';
+						comment_frame += '</div>';
+						comment_frame += '<input type="hidden" id="comment_hiddenContent' + data[i].no + '" name="comment_hiddenContent' + data[i].no + '" value="' + data[i].content + '">';
+						comment_frame += '<div id="comment_content' + data[i].no + '" class="border rounded bg-white p-4">' + data[i].content + '</div>';
+						comment_frame += '</div>';
+						comment_frame += '</div>';
+						
+					}
+					$('#comment_All').html(comment_frame);
+					
+					$.ajax({
+						url:'countReply.on',
+						type:'post',
+						data: {"replyBoardNo": replyBoardNo},
+						async:true,
+						success:function(count) {
+							$("#comment_Count").html('Comments('+count+')');
+						},
+						error:function() {
+							alert("페이지 오류 발생, 페이지를 다시 불러와주시길 바랍니다.");
+						}
+					});
+				},
+				error:function() {
+					alert("페이지 오류 발생, 페이지를 다시 불러와주시길 바랍니다.");
+				}
+			});
+		}
+		function comment_btnEdit(replyNo) {
+			var old_content = $("#comment_hiddenContent" + replyNo).val();
+			$("#comment_btnEditRemove" + replyNo).html('<div onclick="comment_btnEditCancel(' + replyNo + ')" class="boardReply d-inline">취소</div>/<div onclick="comment_btnRemove(' + replyNo + ')" class="boardReply d-inline">삭제</div>');
+			
+			var comment_content = '';
+			comment_content += '<form id="comment_ModifyForm'+ replyNo +'" method="post">';
+			comment_content += '<div class="d-flex justify-content-center">';
+			comment_content += '<textarea class="form-control" placeholder="Comment" style="height:120px;" id="comment_contentModify' + replyNo + '" name="comment_contentModify' + replyNo + '">' + old_content + '</textarea>';
+			comment_content += '</div>';
+			comment_content += '<div class="d-flex justify-content-center">';
+			comment_content += '<input onclick="comment_btnUpdate(' + replyNo + ')" class="form-control btn btn-dark" type="button" value="Modify" id="comment_btnModify' + replyNo + '" name="comment_btnModify' + replyNo + '">';
+			comment_content += '</div>';
+			comment_content += '</form>';
+			$("#comment_content" + replyNo).html(comment_content);
+		}
+		
+		function comment_btnEditCancel(replyNo) {
+			var old_content = $("#comment_hiddenContent" + replyNo).val();
+			$("#comment_btnEditRemove" + replyNo).html('<div onclick="comment_btnEdit(' + replyNo + ')" class="boardReply d-inline">수정</div>/<div onclick="comment_btnRemove(' + replyNo + ')" class="boardReply d-inline">삭제</div>');
+			
+			var comment_content = '';
+			comment_content += old_content;
+			$("#comment_content" + replyNo).html(comment_content);
+		}
+		
+		function comment_btnRemove(replyNo) {
+			var no = encodeURIComponent(replyNo);
+			$.ajax({
+				url:'removeReply.on',
+				type:'post',
+				data: {"replyNo": no},
+				async:true,
+				success:function() {
+					reloadRpley();
+				},
+				error:function() {
+					alert("페이지 오류 발생, 페이지를 다시 불러와주시길 바랍니다.");
+				}
+			});
+		}
+		
+		function comment_btnUpdate(replyNo) {
+			var no = encodeURIComponent(replyNo);
+			var content = encodeURIComponent($("#comment_contentModify" + replyNo).val());
+			$.ajax({
+				url:'updateReply.on',
+				type:'post',
+				data: {"replyNo": no, "replyContent": content},
+				async:true,
+				success:function() {
+					reloadRpley();
+				},
+				error:function() {
+					alert("페이지 오류 발생, 페이지를 다시 불러와주시길 바랍니다.");
+				}
+			});
+		}
 	</script>
 </head>
 <body>
@@ -289,79 +431,87 @@
 			<!-- center -->
 			<div class="col-10">
 				<div class="container-fluid border-right">
-					<c:forEach var="dto_board" items="${dtos_board}">
-						<!-- BoardList -->
+					<div class="container-fluid">
 						<div class="m-5">
-							<div class="row">
-								<!-- Profile -->
-								<div class="col-2 d-flex justify-content-center border rounded-left">
-									<table>
-										<tr>
-											<td class="d-flex justify-content-center py-3 pt-5"><img src="img/userProfile/${dto_board.profile_img}" class="rounded-circle" width="40" height="40"></td>
-										</tr>
-										
-										<tr>
-											<td><p>${dto_board.writer}</p></td>
-										</tr>
-									</table>
-								</div>
-								
-								<!-- Title, Content -->
-								<div class="col-8 border">
-									<div class="container-fluid px-3">
-										<h3 class="pb-3 pt-4"><a href="boardView.do?boardNo=${dto_board.boardNo}&no=${dto_board.no}" class="boardTitle">${dto_board.title}</a></h3>
-										<p><a href="boardView.do?boardNo=${dto_board.boardNo}&no=${dto_board.no}" class="boardContent">${dto_board.content}</a></p>
+							<div class="border">
+								<!-- View -->
+								<div class="container">
+									<div class="d-flex justify-content-between pt-1">
+										<div class="p-2"><img src="img/userProfile/${dto_board.profile_img}" class="rounded-circle" width="40" height="40">&nbsp;&nbsp;${dto_board.writer}</div>
+										<div class="p-2">
+											<img src="img/eye.svg" width="30" height="30"> ${dto_board.hits}
+											•
+											<img src="img/clock.svg" width="20" height="20">
+											<fmt:formatDate var="formatDateBoardRegdate" value="${dto_board.regdate}" pattern="MM-dd"/>${formatDateBoardRegdate}
+										</div>
+									</div>
+									<div class="p-2"><h2>${dto_board.title}</h2></div>
+									<hr>
+									<div class="p-2">${dto_board.content}</div>
+									<hr>
+									<div class="d-flex justify-content-end p-3 pt-2 pb-4">
+										<c:if test="${dto_board.writer eq session_id}">
+											<input value="글수정" onclick="location.href='boardUpdateForm.do?boardNo=${param.boardNo}&no=${param.no}'" class="btn btn-outline-dark" type="button">&nbsp;
+										</c:if>
+										<input value="목록" onclick="location.href='iBoardList.do?boardNo=${param.boardNo}'" class="btn btn-outline-dark" type="button">
 									</div>
 								</div>
 								
-								<!-- Comment, Hits, Regdate -->
-								<div class="col-2 d-flex justify-content-center border rounded-right px-4">
-									<table class="table">
-										<tr>
-											<td>
-												<img src="img/comment.svg" width="30" height="30">
-											</td>
-											<td>${dto_board.countReply}</td>
-										</tr>
-										<tr>
-											<td>
-												<img src="img/eye.svg" width="30" height="30">
-											</td>
-											<td>${dto_board.hits}</td>
-										</tr>
-										<tr>
-											<td>
-												<img src="img/clock.svg" width="27" height="27">
-											</td>
-											<td>
-												<fmt:formatDate var="formatDateRegdate" value="${dto_board.regdate}" pattern="MM-dd"/>
-												${formatDateRegdate}
-											</td>
-										</tr>
-									</table>
-								</div>
+								
 							</div>
-						</div>
-					</c:forEach>
-					
-					<!-- Board Bottom (페이징 및 버튼) -->
-					<div class="container-fluid">
-						<div class="d-flex justify-content-between">
-							<!-- space -->
-							<div></div>
 							
-							<!-- 페이징 -->
-							<div></div>
-							
-							<!-- 버튼 -->
-							<div>
-								<c:choose>
-									<c:when test="${state eq 'login'}">
-										<button onclick="location.href='boardWriteForm.do?boardNo=${param.boardNo}'" class="btn btn-dark">글작성</button>&nbsp;
-									</c:when>
-									<c:otherwise>
-									</c:otherwise>
-								</c:choose>
+							<div class="border" style="background-color:#fbfbfb;">
+								<!-- Comment -->
+								<div id="comment" class="container">
+									<input type="hidden" id="hidden_boardNo" name="hidden_boardNo" value="${dto_board.no}">
+									<h4 id="comment_Count" class="p-2 py-4">Comments(${dto_countReply.countReply})</h4>
+									<hr>
+									<div class="container-fluid pb-3">
+										<form id="comment_Form" method="post">
+										  	<div class="d-flex justify-content-start">
+										    	<div class="p-2"><img src="img/userProfile/${session_profileImg}" class="rounded-circle" width="40" height="40"></div>
+										    	<div class="p-2 pt-3">${session_id}</div>
+										    </div>
+										  	<div class="d-flex justify-content-center">
+										    	<textarea class="form-control" placeholder="Comment" style="height:120px;" id="comment_content" name="comment_content"></textarea>
+										    </div>
+										  	<div class="d-flex justify-content-center">
+										  	  <input class="form-control btn btn-dark" type="button" value="Submit" id="comment_btnSubmit" name="comment_btnSubmit">
+										    </div>
+									    </form>
+									</div>								
+									<div id="comment_All" class="pb-5">
+										<c:forEach var="dto_reply" items="${dtos_reply}">
+											<div class="row p-2">
+												<div class="col-1">
+													<div class="pl-2 py-2">
+														<img src="img/userProfile/${dto_reply.profile_img}" class="rounded-circle" width="40" height="40">
+													</div>
+												</div>
+												<div class="col-11">
+													<div class="d-flex justify-content-between">
+														<div class="p-2">${dto_reply.writer}</div>
+														<div class="p-2">
+															<c:choose>
+																<c:when test="${dto_reply.writer eq session_id}">
+																	<div id="comment_btnEditRemove${dto_reply.no}" class="d-inline">
+																		<div onclick="comment_btnEdit(${dto_reply.no})" class="boardReply d-inline">수정</div>/<div onclick="comment_btnRemove(${dto_reply.no})" class="boardReply d-inline">삭제</div>
+																	</div>
+																</c:when>
+																<c:otherwise>
+																	
+																</c:otherwise>
+															</c:choose>
+															<fmt:formatDate var="formatDateReplyRegdate" value="${dto_reply.regdate}" pattern="MM-dd HH:mm"/>${formatDateReplyRegdate}
+														</div>
+													</div>
+													<input type="hidden" id="comment_hiddenContent${dto_reply.no}" name="comment_hiddenContent${dto_reply.no}" value="${dto_reply.content}">
+													<div id="comment_content${dto_reply.no}" class="border rounded bg-white p-4">${dto_reply.content}</div>
+												</div>
+											</div>
+										</c:forEach>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

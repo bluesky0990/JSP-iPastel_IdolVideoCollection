@@ -138,8 +138,20 @@ public class BoardDAO {
 		sqlMapper = getInstance();
 		SqlSession session = sqlMapper.openSession();
 		try {
-			return session.selectList("com.nellem.datoBoard.selectBoardPaging", dto);
+			return session.selectList("com.nellem.datoBoard.selectPagingBoard", dto);
 		} finally {
+			session.close();
+		}
+	}
+	
+	public int deleteBoard(int no) {
+		sqlMapper = getInstance();
+		SqlSession session = sqlMapper.openSession();
+		
+		try {
+			return session.update("com.nellem.datoBoard.boardDelete", no);
+		} finally {
+			session.commit();
 			session.close();
 		}
 	}

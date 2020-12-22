@@ -26,7 +26,9 @@ import com.nellem.datoReply.ReplyDTO;
 public class AjaxController extends HttpServlet {
 	private void doHandler(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		
+		//response.setContentType("application/json;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        
 		String uri = request.getRequestURI(); 	//uri :/member-mvc/list.do
 		String com = uri.substring(uri.lastIndexOf("/")+ 1, uri.lastIndexOf(".on")); //command :insert
 

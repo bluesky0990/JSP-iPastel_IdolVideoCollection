@@ -6,6 +6,7 @@
 <mapper namespace="com.nellem.datoBoard">
 	<resultMap type="board" id="boardResult">
 		<result property="no" column="no"/>
+		<result property="num" column="num"/>
 		<result property="boardNo" column="boardNo"/>
 		<result property="hits" column="hits"/>
 		<result property="title" column="title"/>
@@ -51,7 +52,7 @@
 	</select>
 	
 	<select id="selectPagingBoard" resultMap="boardResult">
-		select rnum, no, boardNo, title, writer, content, hits, regdate from (select rownum as rnum, no, boardNo, title, writer, content, hits, regdate from (select no, boardno, title, writer, content, hits, regdate from board order by no desc)) where rnum between #{startRow} and #{endRow}
+		<![CDATA[select rnum, (select count(*) from reply where reply.boardNo = num) as countReply, (select member.profile_img from member where id = writer) as profile_img, num, boardNo, title, writer, content, hits, regdate from (select rownum as rnum, num, boardNo, title, writer, content, hits, regdate from (select no as num, boardno, title, writer, content, hits, regdate from board where boardNo = #{boardNo} order by num desc)) where rnum between #{startRow} and #{endRow}]]>
 	</select>
 	
 	<insert id="boardInsert" parameterType="board">

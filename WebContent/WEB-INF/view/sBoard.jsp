@@ -151,7 +151,6 @@
 		});
 		function alertClose(id) {
 			$("#" + id).hide();
-			location.href="index.do";
 		}
 	</script>
 </head>
@@ -220,11 +219,32 @@
 					<!-- menu bar -->
 					<div>
 						<ul class="nav navbar-nav">
-							<a href="fBoardList.do?boardNo=1"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e; border-radius: 15px 15px 0px 0px;">자유게시판</li></a>
+							<c:choose>
+								<c:when test="${'1' eq param.boardNo}">
+									<a href="fBoardList.do?boardNo=1"><li class="text-center border border-white font-white-package py-2" style="background-color: #2B3B3A; border-radius: 15px 15px 0px 0px;">자유게시판</li></a>
+								</c:when>
+								<c:otherwise>
+									<a href="fBoardList.do?boardNo=1"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e; border-radius: 15px 15px 0px 0px;">자유게시판</li></a>
+								</c:otherwise>
+							</c:choose>
 							<c:forEach var="dto_boardType" items="${dtos_boardType}">
-								<a href="iBoardList.do?boardNo=${dto_boardType.boardNo}"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">${dto_boardType.boardName}</li></a>
+								<c:choose>
+									<c:when test="${dto_boardType.boardNo eq param.boardNo}">
+										<a href="iBoardList.do?boardNo=${dto_boardType.boardNo}"><li class="text-center border border-white font-white-package py-2" style="background-color: #2B3B3A;">${dto_boardType.boardName}</li></a>
+									</c:when>
+									<c:otherwise>
+										<a href="iBoardList.do?boardNo=${dto_boardType.boardNo}"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">${dto_boardType.boardName}</li></a>
+									</c:otherwise>
+								</c:choose>
 							</c:forEach>
-							<a href="boardList.do?boardNo=0"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e; border-radius: 0px 0px 15px 15px;">게시판 요청</li></a>
+							<c:choose>
+								<c:when test="${'0' eq param.boardNo}">
+									<a href="rBoard.do?boardNo=0&no=380"><li class="text-center border border-white font-white-package py-2" style="background-color: #2B3B3A; border-radius: 0px 0px 15px 15px;">게시판 요청</li></a>
+								</c:when>
+								<c:otherwise>
+									<a href="rBoard.do?boardNo=0&no=380"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e; border-radius: 0px 0px 15px 15px;">게시판 요청</li></a>
+								</c:otherwise>
+							</c:choose>
 							<c:if test="${session_rank eq 1}">
 								<a id="btn_addBoardType" href=""><li class="text-center border border-white py-2 my-1" style="background-color: #24292e; color:#007bff; border-radius: 15px;">+</li></a>
 								
@@ -313,36 +333,6 @@
 							
 							<!-- 페이징 -->
 							<div>
-								<ul class="pagination">
-									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">PREV</a></li>
-									<li class="btn btn-dark rounded-0"><a href="javascript:void(0);">1</a></li>
-									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">2</a></li>
-									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">3</a></li>
-									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">4</a></li>
-									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">5</a></li>
-									<li class="btn btn-outline-dark rounded-0"><a href="javascript:void(0);">NEXT</a></li>
-									
-									<c:if test="${currentPageNum > 5}">
-										<li class="btn btn-outline-dark rounded-0"><a href="iBoardList.do?boardNo=${param.boardNo}&page=${blockStartNum - 1}">PREV</a></li>
-									</c:if>
-									<c:forEach var="i" begin="${blockStartNum}" end="${blockLastNum}">
-										<c:choose>
-											<c:when test="${i > lastPageNum}">
-												<li class="btn btn-outline-dark rounded-0">${i}</li>
-											</c:when>
-											<c:when test="${i eq currentPageNum}">
-												<li class="btn btn-dark rounded-0">${i}</li>
-											</c:when>
-											<c:otherwise>
-												<li class="btn btn-outline-dark rounded-0"><a href="iBoardList.do?boardNo=${param.boardNo}&page=${i}">${i}</a></li>
-											</c:otherwise>
-										</c:choose>
-									</c:forEach>
-									
-									<c:if test="${currentPageNum > 5}">
-										<li class="btn btn-outline-dark rounded-0"><a href="iBoardList.do?boardNo=${param.boardNo}&page=${blockLastNum + 1}">NEXT</a></li>
-									</c:if>
-								</ul>
 							</div>
 							
 							<!-- 버튼 -->

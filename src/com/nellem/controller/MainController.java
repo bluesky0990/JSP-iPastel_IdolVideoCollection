@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.nellem.command.BDeleteCommand;
 import com.nellem.command.BInsertCommand;
 import com.nellem.command.BListCommand;
+import com.nellem.command.BRequestCommand;
 import com.nellem.command.BSearchCommand;
 import com.nellem.command.BTypeMainListCommand;
 import com.nellem.command.BUpdateCommand;
@@ -22,7 +24,8 @@ import com.nellem.command.MImgUpdateCommand;
 import com.nellem.command.MInsertCommand;
 import com.nellem.command.MLoginCommand;
 import com.nellem.command.MSelectCommand;
-import com.nellem.paging.PagingDTO;
+import com.nellem.paging.PagingCommand;
+import com.nellem.paging2.ListBoardCommand;
 
 @WebServlet("*.do")
 public class MainController extends HttpServlet {
@@ -55,6 +58,14 @@ public class MainController extends HttpServlet {
 //		System.out.println(pageString+boardTypeString);
 		
 
+		if(com !=null && com.trim().equals("Latest")) {
+			command = new ListBoardCommand();
+			command.execute(request, response);
+			viewPage = "Latest2.jsp";
+		}
+		
+		
+		
 		if(com !=null && com.trim().equals("index")) {
 			command = new BTypeMainListCommand();
 			command.execute(request, response);
@@ -90,6 +101,7 @@ public class MainController extends HttpServlet {
 		}
 		if(com !=null && com.trim().equals("iBoardList")) {
 			command = new BListCommand();
+//			command = new PagingCommand();
 			command.execute(request, response);
 			viewPage = "/WEB-INF/view/iBoard.jsp";
 		}
@@ -98,9 +110,9 @@ public class MainController extends HttpServlet {
 			command.execute(request, response);
 			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
 			if(boardNo != 1) {
-				viewPage = "/WEB-INF/view/iBoardView.jsp";
+				viewPage = "/WEB-INF/view/iBoard.jsp";
 			} else {
-				viewPage = "/WEB-INF/view/fBoardView.jsp";
+				viewPage = "/WEB-INF/view/fBoard.jsp";
 			}
 		}
 		if(com !=null && com.trim().equals("sBoardList")) {
@@ -165,9 +177,22 @@ public class MainController extends HttpServlet {
 			int no = Integer.parseInt(request.getParameter("no"));
 			viewPage = "boardView.do?boardNo=" + boardNo + "&no=" + no;
 		}
+		if(com !=null && com.trim().equals("boardDelete")) {
+			command = new BDeleteCommand();
+			command.execute(request, response);
+			int boardNo = Integer.parseInt(request.getParameter("boardNo"));
+			viewPage = "boardList.do?boardNo=" + boardNo;
+		}
+		if(com !=null && com.trim().equals("rBoard")) {
+			command = new BRequestCommand();
+			command.execute(request, response);
+			viewPage = "/WEB-INF/view/rBoard.jsp";
+		}
 		
+		
+		System.out.println(viewPage);
 		RequestDispatcher rd = request.getRequestDispatcher(viewPage);
-		rd.forward(request, response);	
+		rd.forward(request, response);
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {doHandler(request, response);}

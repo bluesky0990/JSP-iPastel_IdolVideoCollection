@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class BoardDTO {
 	private int no;
+	private int num;
 	private int boardNo;
 	private String title;
 	private String writer;
@@ -22,12 +23,18 @@ public class BoardDTO {
 	private int endRow;
 	
 	
-	
+
 	public int getNo() {
 		return no;
 	}
 	public void setNo(int no) {
 		this.no = no;
+	}
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
 	}
 	public int getBoardNo() {
 		return boardNo;

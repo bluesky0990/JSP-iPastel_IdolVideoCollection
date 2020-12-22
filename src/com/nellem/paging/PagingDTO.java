@@ -101,7 +101,7 @@ public class PagingDTO {
  
         this.setStartPageNo(startPage); // 시작 페이지 (페이징 네비 기준)
         this.setEndPageNo(endPage); // 끝 페이지 (페이징 네비 기준)
- 
+        
         if (isNowFinal) {
             this.setNextPageNo(finalPage); // 다음 페이지 번호
         } else {

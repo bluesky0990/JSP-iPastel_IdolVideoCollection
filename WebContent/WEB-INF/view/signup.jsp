@@ -80,6 +80,7 @@
 						console.log(idCheck);
 						if("true" === idCheck) {
 							alert("사용 가능한 ID입니다.");
+							$("#signup_id").attr("readonly", true);
 						} else {
 							alert("이미 존재하는 ID입니다.");
 						}
@@ -95,11 +96,18 @@
 		}
 		
 		function idCheckOnSubmit() {
-			if(idCheck === "true") {
-				$("#form_signup").submit();
-			} else {
+			var pwd = document.getElementById("signup_pw").value;;
+			var name = document.getElementById("signup_name").value;
+			if(idCheck !== "true") {
 				alert("ID 중복체크를 해주시길 바랍니다.");
 				return
+			}
+			if(pwd === "" || name === "") {
+				alert("빈 칸 없이 모두 입력해주시기 바랍니다.");
+				return
+			}
+			if(idCheck === "true" && pwd !== "" && name !== "") {
+				$("#form_signup").submit();
 			}
 		}
 	</script>
@@ -157,7 +165,7 @@
 						<td>
 							<br>
 							<div class="text-center">
-								<button onclick="idCheckOnSubmit();" class="form-control btn btn-dark mb-2">Submit</button>
+								<input type="button" onclick="idCheckOnSubmit();" class="form-control btn btn-dark mb-2" value="Submit">
 								<button class="form-control btn btn-outline-dark">back</button>
 							</div>
 						</td>

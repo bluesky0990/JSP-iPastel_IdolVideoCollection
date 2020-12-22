@@ -68,6 +68,11 @@
 		.boardTitle {
 			color: #24292e;
 			font-size:1.2em;
+			display: inline-block;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+			width:260px;
 		}
 		.boardTitle:link {
 			color: #24292e;
@@ -179,7 +184,6 @@
 		});
 		function alertClose(id) {
 			$("#" + id).hide();
-			location.href="index.do";
 		}
 		
 		function reloadRpley() {
@@ -190,6 +194,7 @@
 				data: {"replyBoardNo": replyBoardNo},
 				async:true,
 				dataType:'json',
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 				success:function(data) {
 					var comment_frame = "";
 					
@@ -283,7 +288,7 @@
 		
 		function comment_btnUpdate(replyNo) {
 			var no = encodeURIComponent(replyNo);
-			var content = encodeURIComponent($("#comment_contentModify" + replyNo).val());
+			var content = $("#comment_contentModify" + replyNo).val();
 			$.ajax({
 				url:'updateReply.on',
 				type:'post',
@@ -364,11 +369,32 @@
 					<!-- menu bar -->
 					<div>
 						<ul class="nav navbar-nav">
-							<a href="fBoardList.do?boardNo=1"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e; border-radius: 15px 15px 0px 0px;">자유게시판</li></a>
+							<c:choose>
+								<c:when test="${'1' eq param.boardNo}">
+									<a href="fBoardList.do?boardNo=1"><li class="text-center border border-white font-white-package py-2" style="background-color: #2B3B3A; border-radius: 15px 15px 0px 0px;">자유게시판</li></a>
+								</c:when>
+								<c:otherwise>
+									<a href="fBoardList.do?boardNo=1"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e; border-radius: 15px 15px 0px 0px;">자유게시판</li></a>
+								</c:otherwise>
+							</c:choose>
 							<c:forEach var="dto_boardType" items="${dtos_boardType}">
-								<a href="iBoardList.do?boardNo=${dto_boardType.boardNo}"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">${dto_boardType.boardName}</li></a>
+								<c:choose>
+									<c:when test="${dto_boardType.boardNo eq param.boardNo}">
+										<a href="iBoardList.do?boardNo=${dto_boardType.boardNo}"><li class="text-center border border-white font-white-package py-2" style="background-color: #2B3B3A;">${dto_boardType.boardName}</li></a>
+									</c:when>
+									<c:otherwise>
+										<a href="iBoardList.do?boardNo=${dto_boardType.boardNo}"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e;">${dto_boardType.boardName}</li></a>
+									</c:otherwise>
+								</c:choose>
 							</c:forEach>
-							<a href="boardList.do?boardNo=0"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e; border-radius: 0px 0px 15px 15px;">게시판 요청</li></a>
+							<c:choose>
+								<c:when test="${'0' eq param.boardNo}">
+									<a href="rBoard.do?boardNo=0&no=380"><li class="text-center border border-white font-white-package py-2" style="background-color: #2B3B3A; border-radius: 0px 0px 15px 15px;">게시판 요청</li></a>
+								</c:when>
+								<c:otherwise>
+									<a href="rBoard.do?boardNo=0&no=380"><li class="text-center border border-white font-white-package py-2" style="background-color: #24292e; border-radius: 0px 0px 15px 15px;">게시판 요청</li></a>
+								</c:otherwise>
+							</c:choose>
 							<c:if test="${session_rank eq 1}">
 								<a id="btn_addBoardType" href=""><li class="text-center border border-white py-2 my-1" style="background-color: #24292e; color:#007bff; border-radius: 15px;">+</li></a>
 								
@@ -437,6 +463,7 @@
 									<div class="d-flex justify-content-end p-3 pt-2 pb-4">
 										<c:if test="${dto_board.writer eq session_id}">
 											<input value="글수정" onclick="location.href='boardUpdateForm.do?boardNo=${param.boardNo}&no=${param.no}'" class="btn btn-outline-dark" type="button">&nbsp;
+											<input value="글삭제" onclick="location.href='boardDelete.do?boardNo=${param.boardNo}&no=${param.no}'" class="btn btn-outline-dark" type="button">&nbsp;
 										</c:if>
 										<input value="목록" onclick="location.href='iBoardList.do?boardNo=${param.boardNo}'" class="btn btn-outline-dark" type="button">
 									</div>
@@ -523,7 +550,7 @@
 												
 												<div class="d-flex justify-content-start">
 													<div class="boardTitleAnother">
-														조회수 ${dto_board.hits}회 • ${formatDateRegdate}
+														조회수 ${dto_board.hits}회 •<fmt:formatDate var="formatDateBoardRegdate" value="${dto_board.regdate}" pattern="MM-dd"/> ${formatDateBoardRegdate}
 													</div>
 												</div>
 											</div>

@@ -16,25 +16,29 @@ public class PagingCommand implements InterfaceCommand {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BoardDAO dao = new BoardDAO();
 		BoardDTO dto = new BoardDTO();
-		List<BoardDTO> list;
 		
 		int boardType = Integer.parseInt(request.getParameter("boardNo"));
 		dao.selectBoardCount(boardType);
 		int totalCount = dto.getCountBoard();
 		int page = request.getParameter("page") == null ? 1 : Integer.parseInt(request.getParameter("page"));
 		
+		int start = 0;
+		int end = 0;
 		PagingDTO paging = new PagingDTO();
 		paging.setPageNo(page);
 		paging.setPageSize(24); // 한 페이지에 불러낼 게시물의 개수 지정
 		paging.setPageSize(totalCount);
+//		dto.setStartRow(page);
+//		dto.setEndRow(paging.getPageSize());
+		dto.setStartRow(start);
+		dto.setEndRow(end);
+		List<BoardDTO> list = dao.selectBoardPaging(dto);
 		
-		page = (page - 1) * 24;	// select 해오는 기준을 구한다.
+		start = (page - 1) * 24 + 1;	// select 해오는 기준을 구한다.
+		end = page * 24;
 		
-		dto.setStartRow(page);
-		dto.setEndRow(paging.getPageSize());
-		list = dao.selectBoardPaging(dto);
 
-		request.setAttribute("list", list);
+		request.setAttribute("dtos_board", list);
 		request.setAttribute("paging", paging);
 	}
 }
