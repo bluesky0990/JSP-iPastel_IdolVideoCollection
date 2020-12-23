@@ -469,15 +469,32 @@
 									<div class="container-fluid pb-3">
 										<form id="comment_Form" method="post">
 										  	<div class="d-flex justify-content-start">
-										    	<div class="p-2"><img src="img/userProfile/${session_profileImg}" class="rounded-circle" width="40" height="40"></div>
-										    	<div class="p-2 pt-3">${session_id}</div>
+												<c:choose>
+													<c:when test="${empty session_profileImg}">
+												    	<div class="p-2"><img src="img/userProfile.png" class="rounded-circle" width="40" height="40"></div>
+												    	<div class="p-2 pt-3">Guest</div>
+													</c:when>
+													<c:otherwise>
+												    	<div class="p-2"><img src="img/userProfile/${session_profileImg}" class="rounded-circle" width="40" height="40"></div>
+												    	<div class="p-2 pt-3">${session_id}</div>
+													</c:otherwise>
+												</c:choose>
 										    </div>
-										  	<div class="d-flex justify-content-center">
-										    	<textarea class="form-control" placeholder="Comment" style="height:120px;" id="comment_content" name="comment_content"></textarea>
-										    </div>
-										  	<div class="d-flex justify-content-center">
-										  	  <input class="form-control btn btn-dark" type="button" value="Submit" id="comment_btnSubmit" name="comment_btnSubmit">
-										    </div>
+											<c:choose>
+												<c:when test="${empty session_id}">
+												  	<div class="d-flex justify-content-center">
+												    	<textarea class="form-control" placeholder="로그인 후 이용하실 수 있습니다." style="height:120px;" id="comment_content" name="comment_content" disabled></textarea>
+												    </div>
+												</c:when>
+												<c:otherwise>
+												  	<div class="d-flex justify-content-center">
+												    	<textarea class="form-control" placeholder="Comment" style="height:120px;" id="comment_content" name="comment_content"></textarea>
+												    </div>
+												  	<div class="d-flex justify-content-center">
+												  	  <input class="form-control btn btn-dark" type="button" value="Submit" id="comment_btnSubmit" name="comment_btnSubmit">
+												    </div>
+												</c:otherwise>
+											</c:choose>
 									    </form>
 									</div>								
 									<div id="comment_All" class="pb-5">

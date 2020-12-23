@@ -189,8 +189,6 @@ public class MainController extends HttpServlet {
 			viewPage = "/WEB-INF/view/rBoard.jsp";
 		}
 		
-		
-		System.out.println(viewPage);
 		RequestDispatcher rd = request.getRequestDispatcher(viewPage);
 		rd.forward(request, response);
 	}

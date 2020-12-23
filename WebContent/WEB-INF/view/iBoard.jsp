@@ -72,7 +72,7 @@
 			text-overflow: ellipsis;
 			white-space: nowrap;
 			overflow: hidden;
-			width:260px;
+			width:245px;
 		}
 		.boardTitle:link {
 			color: #24292e;
