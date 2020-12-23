@@ -28,7 +28,7 @@
 	</select>
 
 	<select id="selectMainPage" resultMap="boardResult">
-		 <![CDATA[select * from board where ROWNUM <= 24 and boardNo not in (0,1) order by no desc]]> 
+		 <![CDATA[select rownum, no, boardNo, title, writer, content, hits, regdate from (select no, boardNo, title, writer, content, hits, regdate from board where boardNo not in (0,1) order by no desc) where rownum <= 24]]>
 	</select>
 	
 	<select id="selectPart" resultMap="boardResult">

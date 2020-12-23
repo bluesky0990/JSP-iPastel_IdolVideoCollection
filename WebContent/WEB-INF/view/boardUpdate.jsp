@@ -20,20 +20,20 @@
 	</c:choose>
 	<style type="text/css">
 		@font-face {
-			font-family: "Arita-buriM";
-			src: url("./font/Arita-buriM.otf");
+			font-family: "NanumGothicCoding";
+			src: url("./font/NanumGothicCoding.ttf");
 		}
 		
 		* {
-			font-family: "Arita-buriM";
+			font-family: "NanumGothicCoding";
 		}
 		
 		.font-white-package {
-			font-family: "Arita-buriM";
+			font-family: "NanumGothicCoding";
 			color: #eee;
 		}
 		.font-black-package {
-			font-family: "Arita-buriM";
+			font-family: "NanumGothicCoding";
 			color: #24292e;
 		}
 		
