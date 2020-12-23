@@ -386,7 +386,7 @@
 								</c:otherwise>
 							</c:choose>
 							<c:if test="${session_rank eq 1}">
-								<a id="btn_addBoardType" href=""><li class="text-center border border-white py-2 my-1" style="background-color: #24292e; color:#007bff; border-radius: 15px;">+</li></a>
+								<a id="btn_addBoardType" href=""><li class="text-center border border-white py-2 my-1 font-weight-bolder" style="background-color: #24292e; color:#007bff; border-radius: 15px;">+</li></a>
 								
 								<!-- 회원가입 확인 Modal-->
 								<div class="modal fade" id="modalAddBoardType" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

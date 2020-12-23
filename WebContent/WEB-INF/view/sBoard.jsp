@@ -246,7 +246,7 @@
 								</c:otherwise>
 							</c:choose>
 							<c:if test="${session_rank eq 1}">
-								<a id="btn_addBoardType" href=""><li class="text-center border border-white py-2 my-1" style="background-color: #24292e; color:#007bff; border-radius: 15px;">+</li></a>
+								<a id="btn_addBoardType" href=""><li class="text-center border border-white py-2 my-1 font-weight-bolder" style="background-color: #24292e; color:#007bff; border-radius: 15px;">+</li></a>
 								
 								<!-- 회원가입 확인 Modal-->
 								<div class="modal fade" id="modalAddBoardType" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -292,7 +292,8 @@
 			<!-- center -->
 			<div class="col-10">
 				<div class="container-fluid border-right">
-					<div class="m-5">
+					<div class="m-5 mt-1">
+						<h3 class="px-4">"${param.search_entry}"에 대한 검색결과</h3>
 						<!-- 320x180 p1 m2, 12개, 최신순 -->
 						<div class="container-fluid">
 							<div class="d-inline-block m-2">
@@ -316,7 +317,7 @@
 									</c:forEach>
 									<tr>
 										<td class="text-white">　　　　</td>
-										<td class="text-white">　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　</td>
+										<td class="text-white">　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　</td>
 										<td class="text-white">　　　　　　　　　　　　　　　　　　</td>
 										<td class="text-white">　　　　　</td>
 										<td class="text-white">　　　　</td>
