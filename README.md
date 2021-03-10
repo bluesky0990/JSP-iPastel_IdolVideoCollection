@@ -11,10 +11,10 @@ alt="IMAGE ALT TEXT HERE" width="360" height="240" border="10" /></a>
 
 ### Tools
 - JSP
-- jQuery
-- mybatis
-- CKEditor 4
-- BootStrap 4
+- [jQuery](https://jquery.com/)
+- [mybatis](https://mybatis.org/)
+- [CKEditor4](https://ckeditor.com/)
+- [BootStrap4](https://getbootstrap.com/)
 
 ### Installation
 1. Clone the Repository
@@ -23,6 +23,8 @@ alt="IMAGE ALT TEXT HERE" width="360" height="240" border="10" /></a>
 
 ### Features
  - SignUp / SignIn / RemoveAccount
- - Change Profile(PWD, Profile Img)
+ - Change Profile(PWD, Profile Img)(AJAX)
  - Board Post / Read / Update / Delete
  - Board Type Add-in(only admin)
+ - Reply Post / Update / Delete(AJAX)
+ - Search Board
