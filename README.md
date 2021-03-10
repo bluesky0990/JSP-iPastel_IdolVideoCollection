@@ -19,7 +19,8 @@ alt="IMAGE ALT TEXT HERE" width="360" height="240" border="10" /></a>
 ### Installation
 1. Clone the Repository
 2. Import [SQL](https://github.com/bluesky0990/JSPPrj_iPastel/blob/master/SQL.sql) File
-3. RUN
+3. JDBC Setting on ```/prj/src/com/nellem/config/mybatis-config.xml```
+4. RUN
 
 ### Features
  - SignUp / SignIn / RemoveAccount
